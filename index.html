@@ -662,13 +662,13 @@ figure.plate img + img{margin:0}
         <p class="muted small">Mean growing-season RHmax, the highest in the network. MDD exceeded 2&nbsp;°C on 2% of growing-season days (2024). Green pasture in all directions.</p>
       </div>
       <div class="site">
-        <img class="main" src="assets/station_gcdw.jpg" alt="Grand Coulee Dam station in grey sagebrush above a reservoir, with dry hills beyond.">
-        <div class="round" aria-label="Views north, east, south and west from the Grand Coulee Dam station: sagebrush, rock and water.">
-          <img src="assets/station_gcdw_n.jpg" alt=""><img src="assets/station_gcdw_e.jpg" alt=""><img src="assets/station_gcdw_s.jpg" alt=""><img src="assets/station_gcdw_w.jpg" alt="">
+        <img class="main" src="assets/station_onto.jpg" alt="Ontario station on a small strip of mown grass beside a bare, tilled field.">
+        <div class="round" aria-label="Views north, east, south and west from the Ontario station: a small grass plot surrounded by gravel, farm equipment, buildings and bare tilled soil.">
+          <img src="assets/station_onto_n.jpg" alt=""><img src="assets/station_onto_e.jpg" alt=""><img src="assets/station_onto_s.jpg" alt=""><img src="assets/station_onto_w.jpg" alt="">
         </div>
-        <h3>Grand Coulee Dam, Washington</h3>
-        <div class="verdict bad"><span class="pct">73%</span><span class="pill bad">Dry fetch</span></div>
-        <p class="muted small">Mean growing-season RHmax. MDD exceeded 2&nbsp;°C on 91% of growing-season days (2002–2024). Non-irrigated sagebrush and rock; no well-watered vegetation within the fetch.</p>
+        <h3>Ontario, Oregon</h3>
+        <div class="verdict bad"><span class="pct">74%</span><span class="pill bad">Dry fetch</span></div>
+        <p class="muted small">Mean growing-season RHmax. MDD exceeded 2&nbsp;°C on 79% of growing-season days (1992–2024). A small grass plot surrounded by bare tilled soil, gravel and farm buildings: the reference surface ends a few meters from the sensors.</p>
       </div>
     </div>
     <p class="credit">Station photos: U.S. Bureau of Reclamation, AgriMet station pages (public domain).</p>
@@ -879,7 +879,7 @@ figure.plate img + img{margin:0}
         <li>American Falls Reservoir: NASA astronaut photograph ISS069-E-20298, ISS Crew Earth Observations Facility and the Earth Science and Remote Sensing Unit, Johnson Space Center. <a href="https://science.nasa.gov/earth/earth-observatory/idahos-fields-and-flows-151951/">Idaho's Fields and Flows</a>.</li>
         <li>Center pivot, Idaho: Mark Olson, USDA NRCS, public domain, via <a href="https://commons.wikimedia.org/wiki/File:NRCSID00002_-_Idaho_(3995)(NRCS_Photo_Gallery).jpg">Wikimedia Commons</a>.</li>
         <li>Morrow County, Oregon: Sam Beebe/Ecotrust, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Wind_mills_and_irrigators_-_panoramio.jpg">Wikimedia Commons</a>. Cropped.</li>
-        <li>Station photos (Astoria, Tillamook, Grand Coulee Dam): U.S. Bureau of Reclamation, <a href="https://www.usbr.gov/pn/agrimet/">AgriMet</a> station pages.</li>
+        <li>Station photos (Astoria, Tillamook, Ontario): U.S. Bureau of Reclamation, <a href="https://www.usbr.gov/pn/agrimet/">AgriMet</a> station pages.</li>
         <li>Aerial views: USGS The National Map, orthoimagery, public domain. Rings and labels added.</li>
         <li>Maps, charts and manuscript figures: study team.</li>
       </ul>
@@ -1236,7 +1236,7 @@ document.querySelectorAll(".compare").forEach(c => {
     bindTip(c, `<b>${d.n}</b>MDD > 2 °C on ${Math.round(d.dry)}% of growing-season days` + (d.rh != null ? `<br>Mean growing-season RHmax ${d.rh.toFixed(1)}%` : "") + `<br>Dominant land cover (300 m): ${d.lc}<br>Record: ${d.yrs}`);
     return {d, c};
   });
-  const callouts = {tlmo:[-1,"Tillamook"], gcdw:[1,"Grand Coulee Dam"], blcu:[1,"Blue Creek"], ifai:[1,"Idaho Falls"], osgi:[-1,"Osgood"], asto:[-1,"Astoria"]};
+  const callouts = {tlmo:[-1,"Tillamook"], onto:[-1,"Ontario"], blcu:[1,"Blue Creek"], ifai:[1,"Idaho Falls"], osgi:[-1,"Osgood"], asto:[-1,"Astoria"]};
   M.stations.forEach(d => {
     const c = callouts[d.id]; if (!c) return;
     el("text", {x:d.x + c[0] * 14, y:d.y + (d.id === "osgi" ? -8 : d.id === "ifai" ? 14 : 5), "text-anchor": c[0] > 0 ? "start" : "end", "font-size":15, class:"lab-strong", stroke:PAPER, "stroke-width":4, "paint-order":"stroke", "pointer-events":"none"}, s, c[1]);
