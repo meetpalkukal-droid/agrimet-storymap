@@ -266,6 +266,9 @@ figcaption{font-size:.8rem;color:var(--ink-2);margin-top:.7rem;line-height:1.5}
 .actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1.25rem,3vw,2.5rem)}
 @media (max-width:760px){.actions{grid-template-columns:1fr}}
 .action{display:flex;flex-direction:column;gap:.45rem;border-top:1px solid var(--line-2);padding-top:1rem}
+.actions.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:760px){.actions.two{grid-template-columns:1fr}}
+.action .verb.cov{color:var(--teal)} .action .verb.tru{color:var(--rust)}
 .action .verb{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--green)}
 .action h3{font-size:1.45rem}
 .action p{color:var(--ink-2);font-size:.93rem}
@@ -811,59 +814,19 @@ figure.plate img + img{margin:0}
   </div>
 </section>
 
-<section class="sec gut">
-  <div class="wide sidecar">
-    <div class="stack">
-      <span class="kicker">Finding 6 · Cropland is not the same as irrigated land</span>
-      <h2>Cropland fraction alone does not predict MDD</h2>
-      <div class="prose">
-        <p>The fraction of cropland within 2 km was essentially uncorrelated with station-mean MDD (ρ ≈ 0.07). A land-cover label cannot separate irrigated from dryland crops.</p>
-        <p>One Utah station, Blue Creek, has <b>93% cropland</b> in its 2 km buffer, yet averaged a growing-season MDD of <b>8.1&nbsp;°C</b> and RHmax of <b>63%</b>, values typical of bare ground. The surrounding fields are non-irrigated grain.</p>
-        <p>Networks therefore need to report humidity diagnostics together with land-cover descriptors.</p>
-      </div>
-    </div>
-    <div class="evidence stack" style="gap:.5rem">
-      <div class="sat"><img src="assets/sat_blcu.jpg" alt="Aerial view of the Blue Creek station in Utah: tan, non-irrigated grain fields and dry hills."><div class="tagline"><span class="name">Blue Creek, Utah</span><span class="num">8.1&nbsp;°C<small>mean GS MDD</small></span></div></div>
-      <div class="ringkey"><span>Inner ring: 300 m</span><span>Outer ring: 2 km</span></div>
-      <p class="credit">Imagery: USGS National Map, orthoimagery (public domain).</p>
-    </div>
-  </div>
-</section>
-
 <section class="sec gut" style="background:var(--surface)">
   <div class="wide stack" style="gap:2.25rem">
-    <div class="sidecar">
-      <div class="stack">
-        <span class="kicker">Implications</span>
-        <h2>Report aridity diagnostics alongside ETref</h2>
-        <div class="prose">
-          <p>Current standards say where a reference station should be, but networks rarely report whether each station meets them. Users can tell whether ETref can be calculated from the data, but not whether it should be used without adjustment.</p>
-          <p>The framework classifies stations as <b>reference-quality, marginal or non-reference</b>. It uses routinely archived station data and free 10 m satellite products, so it can be added as a reporting layer without new instrumentation.</p>
-        </div>
-      </div>
-      <div class="evidence stack" style="gap:.5rem">
-        <span class="mock">Illustrative layout · indicator values from study data</span>
-        <div class="labelcard" role="group" aria-label="Illustrative station diagnostic panel for Blue Creek, Utah">
-          <div class="hd"><b>Blue Creek, UT</b><span class="small muted">Growing-season diagnostics</span></div>
-          <div class="row"><span class="k">Mean MDD</span><span class="v">8.1 °C</span></div>
-          <div class="row"><span class="k">Mean RHmax</span><span class="v">63%</span></div>
-          <div class="row"><span class="k">Cropland within 2 km</span><span class="v">93%</span></div>
-          <div class="row"><span class="k">Diagnostic class</span><span class="status bad">Non-reference</span></div>
-        </div>
-        <div class="labelcard" role="group" aria-label="Illustrative station diagnostic panel for Tillamook, Oregon">
-          <div class="hd"><b>Tillamook, OR</b><span class="small muted">Growing-season diagnostics</span></div>
-          <div class="row"><span class="k">Mean RHmax</span><span class="v">97.9%</span></div>
-          <div class="row"><span class="k">Days with MDD &gt; 2 °C</span><span class="v">2%</span></div>
-          <div class="row"><span class="k">Diagnostic class</span><span class="status good">Reference-quality</span></div>
-        </div>
-      </div>
+    <div class="col stack" style="margin-inline:0">
+      <span class="kicker">What this means</span>
+      <h2>What this means for water users and the network</h2>
+      <p class="muted" style="max-width:62ch">The network is well placed for day-to-day irrigation decisions, but many stations do not sit in the well-watered surroundings that reference ET assumes. Both can be improved, largely with data the network already collects.</p>
     </div>
-    <div class="actions">
-      <div class="action"><span class="verb">Report</span><h3>Publish class and indicators</h3><p>Report seasonal indicator values and diagnostic class with published ETref, and flag non-reference days (for example, MDD above 2&nbsp;°C).</p></div>
-      <div class="action"><span class="verb">Adjust</span><h3>Correct flagged days only</h3><p>Marginal stations: estimate Tdew = Tmin − Ko. Non-reference stations: temperature adjustments, which reduced overestimation from 16–19% to 4–9% in central Washington. Blending-height conditioning removed about 73% of midsummer ETo bias in an Idaho test.</p></div>
-      <div class="action"><span class="verb">Prioritize</span><h3>Calibration and siting</h3><p>Exclude or down-weight non-reference stations when calibrating gridded ET products, and target siting fixes, such as maintaining an irrigated buffer or revising mowing practice, where scores are worst.</p></div>
+    <div class="actions two">
+      <div class="action"><span class="verb cov">Station locations</span><h3>Protect the stations that matter most</h3><p>A few stations, such as Astoria on the Oregon coast, are the only source of information for a large area. Keeping them running protects water-use estimates for the farms around them.</p></div>
+      <div class="action"><span class="verb cov">Station locations</span><h3>Add stations where farms are underserved</h3><p>New stations do the most good along the coast, in parts of the Columbia Basin and in interior valleys with few stations. Stations added in 2024 were placed in exactly these kinds of locations.</p></div>
+      <div class="action"><span class="verb tru">Station surroundings</span><h3>Keep station surroundings green and watered</h3><p>Irrigating and maintaining the grass or alfalfa around each station is the simplest way to make its readings represent the irrigated fields it serves.</p></div>
+      <div class="action"><span class="verb tru">Station surroundings</span><h3>Tell users which readings to trust</h3><p>Publishing a simple quality flag with each station's ET values would let growers and water managers know when a value may run high, and adjust their irrigation or water accounting accordingly.</p></div>
     </div>
-    <p class="muted small" style="max-width:70ch">Limitations: circular buffers approximate a footprint that is actually fan-shaped and depends on wind and stability; the NDVI–humidity relationship (|ρ| ≈ 0.43 at 2 km) is weaker than in Oklahoma (|ρ| ≈ 0.76); and static classes lag changes in surface wetness after rain. Near-real-time indicators are the next step.</p>
   </div>
 </section>
 
