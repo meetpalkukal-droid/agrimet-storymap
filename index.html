@@ -268,7 +268,7 @@ figcaption{font-size:.8rem;color:var(--ink-2);margin-top:.7rem;line-height:1.5}
 .action{display:flex;flex-direction:column;gap:.45rem;border-top:1px solid var(--line-2);padding-top:1rem}
 .actions.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:760px){.actions.two{grid-template-columns:1fr}}
-.action .verb.cov{color:var(--teal)} .action .verb.tru{color:var(--rust)}
+.action .verb.cov{color:var(--teal)} .action .verb.tru{color:var(--rust)} .action .verb.both{color:var(--gold)}
 .action .verb{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--green)}
 .action h3{font-size:1.45rem}
 .action p{color:var(--ink-2);font-size:.93rem}
@@ -819,13 +819,15 @@ figure.plate img + img{margin:0}
     <div class="col stack" style="margin-inline:0">
       <span class="kicker">What this means</span>
       <h2>What this means for water users and the network</h2>
-      <p class="muted" style="max-width:62ch">The network is well placed for day-to-day irrigation decisions, but many stations do not sit in the well-watered surroundings that reference ET assumes. Both can be improved, largely with data the network already collects.</p>
+      <p class="muted" style="max-width:64ch">A station adds to the network only if it is in the right place <b>and</b> its surroundings let it measure the air over a well-watered field. Where the nearest station sits in dry surroundings, coverage on the map is better than coverage in practice. The steps below address both.</p>
     </div>
     <div class="actions two">
-      <div class="action"><span class="verb cov">Station locations</span><h3>Protect the stations that matter most</h3><p>A few stations, such as Astoria on the Oregon coast, are the only source of information for a large area. Keeping them running protects water-use estimates for the farms around them.</p></div>
-      <div class="action"><span class="verb cov">Station locations</span><h3>Add stations where farms are underserved</h3><p>New stations do the most good along the coast, in parts of the Columbia Basin and in interior valleys with few stations. Stations added in 2024 were placed in exactly these kinds of locations.</p></div>
-      <div class="action"><span class="verb tru">Station surroundings</span><h3>Keep station surroundings green and watered</h3><p>Irrigating and maintaining the grass or alfalfa around each station is the simplest way to make its readings represent the irrigated fields it serves.</p></div>
-      <div class="action"><span class="verb tru">Station surroundings</span><h3>Tell users which readings to trust</h3><p>Publishing a simple quality flag with each station's ET values would let growers and water managers know when a value may run high, and adjust their irrigation or water accounting accordingly.</p></div>
+      <div class="action"><span class="verb cov">Station locations</span><h3>Show how much to trust the number at each farm</h3><p>Water-use estimates for a field between stations carry an uncertainty that depends on how far away the stations are and how they are spread. Publishing a simple map of that uncertainty next to the estimates would let growers see whether their number is solid or rough. In underserved cropland, a typical daily error equals about two hours of center-pivot run time.</p></div>
+      <div class="action"><span class="verb cov">Station locations</span><h3>Use the map to choose where the next station goes</h3><p>The method in this study picked out the same places AgriMet actually chose for its 2024 stations, so it can rank future locations the same way. Daily irrigation scheduling and season-long water planning depend on different stations, so each siting or funding decision should say which of the two it is meant to improve. When budgets tighten, the same ranking shows where stations overlap and which ones the network can least afford to lose.</p></div>
+      <div class="action"><span class="verb both">Both</span><h3>Check a site's surroundings before installing a station</h3><p>A spot can be ideal on the coverage map and still give biased readings if the land around it is dry. Before installing, check satellite images of the surrounding few hundred meters to two kilometers, and confirm the fields are actually irrigated, not just farmed. Sites in the middle of large irrigated areas are best; field edges, towns and shorelines are not.</p></div>
+      <div class="action"><span class="verb tru">Station surroundings</span><h3>Label each station's data quality</h3><p>The humidity indicators in this study can be computed from records AgriMet already keeps. Publishing a simple rating for each station (meets reference conditions, marginal, or does not) and flagging days when the air was too dry would let users judge readings before relying on them, without any new equipment.</p></div>
+      <div class="action"><span class="verb both">Both</span><h3>Give satellite water-use maps a sound starting point</h3><p>Satellite-based water-use maps, such as OpenET, are adjusted to match measurements at hundreds of farm weather stations, including AgriMet stations. If some of those stations sit in dry surroundings, their high readings are carried into the maps for every field nearby. Using only stations that meet reference conditions for this adjustment, and adding stations where none exist, would improve those maps for far more farms than the stations serve directly.</p></div>
+      <div class="action"><span class="verb tru">Station surroundings</span><h3>Re-check stations every year</h3><p>The land around a station changes as fields rotate crops, sit fallow, switch to dryland farming or are developed. The indicators can be updated each year from new satellite images and the station's own records, so a station's rating should be reviewed regularly rather than set once.</p></div>
     </div>
   </div>
 </section>
