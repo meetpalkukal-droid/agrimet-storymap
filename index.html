@@ -1,0 +1,1335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AgriMet Network Representativeness">
+<meta property="og:description" content="How well the Pacific Northwest's AgriMet stations cover irrigated cropland, and whether their surroundings meet reference evapotranspiration siting conditions.">
+<meta property="og:image" content="assets/hero_landsat_idaho.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%232E6A4B'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%23E2CC97' stroke-width='2'/%3E%3C/svg%3E">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
+<title>AgriMet Network Representativeness</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Spatial adequacy and representativeness of station surroundings for the AgriMet reference evapotranspiration network in the Pacific Northwest.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* Layout: a printed survey atlas. Full-bleed photo plates open each part; a ~65ch reading column
+   beside evidence "plates" (maps and charts on fixed paper-white in both themes); hairline rules
+   instead of boxes. Part 1 (spatial adequacy) in survey blue; Part 2 (station surroundings) in
+   irrigated green against dry ochre; brass for rules and highlights. */
+:root{
+  --bg:#F3F4F1; --surface:#FBFBF9; --ink:#141D24; --ink-2:#46515A; --ink-3:#727C83;
+  --line:rgba(20,29,36,.12); --line-2:rgba(20,29,36,.26);
+  --basalt:#0E151A; --on-dark:#EDEFEB; --on-dark-2:rgba(237,239,235,.74);
+  --teal:#1F5571; --teal-soft:#DCE7EC;
+  --green:#2E6A4B; --green-soft:#DEEAE1;
+  --rust:#A9592A; --rust-soft:#F2E3D6;
+  --gold:#A38145; --brass-pale:#E2CC97;
+  --plate:#FAF9F5; --plate-ink:#22272B; --plate-ink-2:#5A5F62; --plate-line:rgba(34,39,43,.14);
+  --sch-sky:#E8EFF1; --sch-sky-dry:#F3EADB; --sch-green:#4F8A5B; --sch-green-2:#2F6B45; --sch-tan:#CDB383; --sch-tan-2:#B59563; --sch-metal:#7C847E; --sch-box:#FFFFFF; --sch-blue:#3A7CA3; --sch-red:#BC522A;
+  --f-display:"Cormorant Garamond", "Cormorant", Garamond, "Times New Roman", serif;
+  --f-body:"Libre Franklin", "Franklin Gothic Book", "Helvetica Neue", Arial, sans-serif;
+  --col:42rem; --wide:74rem;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1519; --surface:#151D22; --ink:#E9EBE7; --ink-2:#B3BBBF; --ink-3:#88929A;
+    --line:rgba(233,235,231,.12); --line-2:rgba(233,235,231,.26);
+    --basalt:#090D10; --teal:#86BCD3; --teal-soft:#1B2E37; --green:#8DC4A1; --green-soft:#1B2C23;
+    --rust:#E39B6C; --rust-soft:#38251A; --gold:#D6B676; --brass-pale:#E2CC97;
+    --plate:#EEEDE7; --sch-sky:#26333A; --sch-sky-dry:#382F24; --sch-green:#4F8A5B; --sch-green-2:#3E7A52; --sch-tan:#8D7650; --sch-tan-2:#76613F; --sch-metal:#AEB5AF; --sch-box:#D9DDD8; --sch-blue:#82B8DA; --sch-red:#EC8C62;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1519; --surface:#151D22; --ink:#E9EBE7; --ink-2:#B3BBBF; --ink-3:#88929A;
+  --line:rgba(233,235,231,.12); --line-2:rgba(233,235,231,.26);
+  --basalt:#090D10; --teal:#86BCD3; --teal-soft:#1B2E37; --green:#8DC4A1; --green-soft:#1B2C23;
+  --rust:#E39B6C; --rust-soft:#38251A; --gold:#D6B676; --brass-pale:#E2CC97;
+  --plate:#EEEDE7; --sch-sky:#26333A; --sch-sky-dry:#382F24; --sch-green:#4F8A5B; --sch-green-2:#3E7A52; --sch-tan:#8D7650; --sch-tan-2:#76613F; --sch-metal:#AEB5AF; --sch-box:#D9DDD8; --sch-blue:#82B8DA; --sch-red:#EC8C62;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.03rem;line-height:1.72;-webkit-font-smoothing:antialiased;font-feature-settings:"kern","liga"}
+img{max-width:100%;display:block}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;line-height:1.06;margin:0;text-wrap:balance;letter-spacing:-.005em;font-variant-numeric:lining-nums}
+p{margin:0}
+b,strong{font-weight:600}
+sub{font-size:.68em;line-height:0;vertical-align:-.28em;letter-spacing:.01em}
+a{color:inherit;text-decoration-color:var(--line-2);text-underline-offset:3px}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.gut{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.col{max-width:var(--col);margin-inline:auto}
+.wide{max-width:var(--wide);margin-inline:auto}
+.kicker{font-family:var(--f-body);font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+.stack{display:flex;flex-direction:column;gap:1.15rem}
+.lede{font-family:var(--f-display);font-size:clamp(1.45rem,2.6vw,1.9rem);line-height:1.32;color:var(--ink)}
+.muted{color:var(--ink-2)}
+.small{font-size:.875rem;line-height:1.6}
+.credit{font-size:.72rem;color:var(--ink-3);line-height:1.45}
+.credit a{color:inherit}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:var(--basalt);color:var(--on-dark);overflow:hidden}
+.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:40% 45%;transform-origin:45% 55%;animation:settle 14s var(--ease) both}
+@keyframes settle{from{transform:scale(1.08)}to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,13,16,.2) 0%,rgba(9,13,16,.32) 38%,rgba(9,13,16,.92) 100%)}
+.hero .inner{position:relative;z-index:1;padding-block:clamp(7rem,24vh,14rem) 3.25rem;display:flex;flex-direction:column;gap:1.4rem}
+.hero .kicker{color:var(--brass-pale)}
+.hero h1{font-size:clamp(2.7rem,6.6vw,5.4rem);font-weight:500;max-width:17ch;color:#fff;line-height:1}
+.hero h1 em{font-style:italic;color:var(--brass-pale)}
+.hero p.sub{font-size:clamp(1.02rem,1.5vw,1.15rem);max-width:40rem;color:var(--on-dark-2)}
+.hero .credit{color:rgba(237,239,235,.5);margin-top:1.75rem;max-width:40rem}
+@media (prefers-reduced-motion:reduce){.hero img.bg{animation:none}}
+
+/* ---------- generic section ---------- */
+.sec{padding-block:clamp(4rem,9vw,7rem)}
+.sec + .sec{border-top:1px solid var(--line)}
+.sec h2{font-size:clamp(2.15rem,4.3vw,3.2rem)}
+.sec h3{font-size:1.55rem;font-weight:600}
+.prose{display:flex;flex-direction:column;gap:1.05rem}
+.prose p{max-width:65ch}
+
+.sidecar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(1.75rem,5vw,4.5rem);align-items:center}
+.sidecar.flip > .evidence{order:-1}
+.sidecar > *{min-width:0}
+@media (max-width:860px){.sidecar{grid-template-columns:1fr}.sidecar.flip > .evidence{order:0}}
+
+.plate{background:var(--plate);color:var(--plate-ink);border-radius:3px;padding:clamp(.85rem,2.2vw,1.5rem);box-shadow:0 0 0 1px var(--plate-line),0 18px 40px -28px rgba(10,20,26,.45)}
+.plate .cap{font-size:.8rem;line-height:1.5;color:var(--plate-ink-2);margin-top:.75rem}
+.plate .cap b{color:var(--plate-ink)}
+figure{margin:0}
+figcaption{font-size:.8rem;color:var(--ink-2);margin-top:.7rem;line-height:1.5}
+
+.twoup{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+@media (max-width:560px){.twoup{grid-template-columns:1fr}}
+.twoup .lab,.compare-lab{font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--plate-ink-2)}
+.twoup .lab{margin-bottom:.4rem}
+
+.legend{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;font-size:.78rem;color:var(--plate-ink-2);margin-top:.8rem}
+.legend span{display:inline-flex;align-items:center;gap:.45rem}
+.legend i{width:.75rem;height:.75rem;border-radius:1px;display:inline-block}
+.ramp{display:flex;align-items:center;gap:.7rem;font-size:.74rem;color:var(--plate-ink-2);margin-top:.75rem}
+.ramp .bar{flex:1;height:.45rem;border-radius:1px;background:linear-gradient(90deg,#F2F0E8,#CFE3E0,#8CC2C2,#3F8E9A,#1D5E70,#0F3A4A)}
+
+/* ---------- before/after comparison ---------- */
+.compare{position:relative;--pos:50%;user-select:none;touch-action:pan-y}
+.compare img{width:100%;display:block}
+.compare .top{position:absolute;inset:0;clip-path:inset(0 0 0 var(--pos))}
+.compare .top img{height:100%;object-fit:cover}
+.compare .rule{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px;background:var(--plate-ink);pointer-events:none}
+.compare .knob{position:absolute;top:50%;left:var(--pos);width:2.4rem;height:2.4rem;margin:-1.2rem 0 0 -1.2rem;border-radius:50%;background:var(--plate);box-shadow:0 0 0 1.5px var(--plate-ink),0 4px 14px rgba(0,0,0,.25);display:grid;place-items:center;pointer-events:none;color:var(--plate-ink);font-size:.8rem;letter-spacing:-.1em}
+.compare input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
+.compare input:focus-visible ~ .knob{box-shadow:0 0 0 3px var(--gold),0 4px 14px rgba(0,0,0,.25)}
+.compare-head{display:flex;justify-content:space-between;gap:1rem;margin-bottom:.55rem}
+.hint{font-size:.74rem;color:var(--plate-ink-2);font-style:italic}
+
+/* ---------- controls ---------- */
+.controls{display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;align-items:center;margin-bottom:.9rem}
+.seg{display:inline-flex;border:1px solid var(--plate-line);border-radius:999px;padding:3px;background:#fff}
+.seg button,.chips button,.play{font:inherit;font-size:.78rem;border:0;background:transparent;color:var(--plate-ink-2);padding:.35rem .85rem;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
+.seg button[aria-pressed="true"]{background:var(--plate-ink);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.chips button{border:1px solid var(--plate-line);background:#fff;padding:.25rem .7rem}
+.chips button[aria-pressed="true"]{border-color:var(--plate-ink);color:var(--plate-ink);background:#ECEAE3}
+.ctl-lab{font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--plate-ink-2);margin-right:.25rem}
+.play{border:1px solid var(--plate-ink);color:var(--plate-ink);display:inline-flex;align-items:center;gap:.45rem}
+.play:hover{background:var(--plate-ink);color:#fff}
+.readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem 1rem;margin-top:.9rem;padding-top:.85rem;border-top:1px solid var(--plate-line);font-variant-numeric:tabular-nums}
+@media (max-width:420px){.readout{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.readout div{display:flex;flex-direction:column;min-width:0}
+.readout span{font-size:.66rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--plate-ink-2)}
+.readout strong{font-family:var(--f-display);font-size:1.55rem;font-weight:600;line-height:1.1;color:var(--plate-ink)}
+.scrub{width:100%;margin:.9rem 0 0;accent-color:var(--plate-ink)}
+.scrub-lab{display:flex;justify-content:space-between;font-size:.74rem;color:var(--plate-ink-2);margin-top:.2rem}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:1.75rem 2.25rem}
+.stat{border-top:1px solid var(--line-2);padding-top:1rem}
+.stat .n{font-family:var(--f-display);font-weight:500;font-size:clamp(2.5rem,5vw,3.4rem);line-height:.95;font-variant-numeric:lining-nums tabular-nums}
+.stat .l{font-size:.84rem;color:var(--ink-2);margin-top:.55rem;line-height:1.45}
+
+/* ---------- part openers ---------- */
+.opener{position:relative;color:var(--on-dark);background:var(--basalt);overflow:hidden}
+.opener img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.opener::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,13,16,.9) 0%,rgba(9,13,16,.6) 52%,rgba(9,13,16,.12) 100%)}
+.opener .inner{position:relative;z-index:1;padding-block:clamp(5.5rem,15vw,10rem);display:flex;flex-direction:column;gap:1.1rem}
+.opener .part{font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--brass-pale)}
+.opener h2{font-size:clamp(2.6rem,5.8vw,4.3rem);max-width:16ch;color:#fff}
+.opener p{max-width:34rem;color:var(--on-dark-2);font-size:1.06rem}
+.opener .credit{color:rgba(237,239,235,.5)}
+
+/* ---------- dark band ---------- */
+.band{background:var(--basalt);color:var(--on-dark)}
+.band .inner{padding-block:clamp(3.75rem,8vw,6rem);display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.5rem 3.5rem;align-items:center}
+.band .big{font-family:var(--f-display);font-weight:500;font-size:clamp(4.2rem,11vw,8.5rem);line-height:.85;color:var(--brass-pale);font-variant-numeric:lining-nums}
+.band p{color:var(--on-dark-2);font-size:1.1rem;max-width:36rem}
+.band p b{color:#fff}
+.band .credit{color:rgba(237,239,235,.5);margin-top:.9rem}
+@media (max-width:640px){.band .inner{grid-template-columns:1fr}}
+
+/* ---------- two questions ---------- */
+.qs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.5rem,4vw,3rem)}
+@media (max-width:640px){.qs{grid-template-columns:1fr}}
+.q{border-top:2px solid currentColor;padding-top:1.1rem;display:flex;flex-direction:column;gap:.6rem}
+.q.cov{color:var(--teal)} .q.tru{color:var(--rust)}
+.q .tag{font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+.q h3{font-size:1.8rem;color:var(--ink)}
+.q p{color:var(--ink-2);font-size:.95rem}
+
+.diagrams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+@media (max-width:480px){.diagrams{grid-template-columns:1fr}}
+.diagrams figure{background:var(--plate);border-radius:3px;padding:1rem;box-shadow:0 0 0 1px var(--plate-line)}
+.diagrams figcaption{color:var(--plate-ink-2)}
+.diagrams figcaption b{color:var(--plate-ink)}
+.diagrams text{font-family:var(--f-body)}
+
+/* ---------- charts ---------- */
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+#stationmap svg{overflow:hidden}
+.chart text{font-family:var(--f-body);fill:var(--plate-ink-2);font-size:13px}
+.chart .base{stroke:rgba(34,39,43,.45)}
+.chart .lab-strong{fill:var(--plate-ink);font-weight:600}
+.chart .dim{opacity:.13}
+.chart circle,.chart rect{transition:opacity .35s var(--ease),fill .45s var(--ease)}
+.tip{position:fixed;z-index:50;pointer-events:none;background:#141D24;color:#F3F4F1;font-size:.8rem;line-height:1.45;padding:.6rem .75rem;border-radius:3px;max-width:17rem;box-shadow:0 10px 28px rgba(0,0,0,.28);opacity:0;transition:opacity .12s}
+.tip b{display:block;font-family:var(--f-display);font-size:1.05rem;font-weight:600;margin-bottom:.15rem}
+.tip.on{opacity:1}
+
+/* ---------- schematic ---------- */
+.schem{background:var(--surface);border-radius:3px;padding:clamp(.85rem,2.5vw,1.75rem);box-shadow:0 0 0 1px var(--line)}
+.schem svg{width:100%;height:auto;display:block}
+.schem text{font-family:var(--f-body)}
+.flow{stroke-dasharray:7 7;animation:flow 1.6s linear infinite}
+.flow.adv{animation-duration:1.1s}
+@keyframes flow{to{stroke-dashoffset:-28}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none;stroke-dasharray:none}}
+.chain{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,3vw,2rem);margin-top:1.5rem}
+.chain > div{border-top:2px solid var(--rust);padding-top:.85rem;font-size:.9rem;line-height:1.55;color:var(--ink-2);position:relative}
+.chain > div b{display:block;font-family:var(--f-display);font-weight:600;font-size:1.3rem;color:var(--ink);margin-bottom:.3rem;line-height:1.15}
+.chain > div:not(:last-child)::after{content:"→";position:absolute;right:-1.2rem;top:-.95rem;color:var(--rust)}
+@media (max-width:640px){.chain{grid-template-columns:1fr}.chain > div:not(:last-child)::after{display:none}}
+
+/* ---------- indicators ---------- */
+.clues{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.5rem,3vw,2.5rem) clamp(1.5rem,4vw,3.5rem)}
+@media (max-width:640px){.clues{grid-template-columns:1fr}}
+.clue{border-top:1px solid var(--line-2);padding-top:1rem;display:flex;flex-direction:column;gap:.4rem}
+.clue .src{font-size:.66rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.clue h3{font-size:1.5rem}
+.clue p{font-size:.92rem;color:var(--ink-2)}
+
+/* ---------- photo pairs ---------- */
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.25rem,4vw,3rem)}
+@media (max-width:720px){.pair{grid-template-columns:1fr}}
+.site{display:flex;flex-direction:column;gap:.75rem}
+.site .main{aspect-ratio:4/3;width:100%;object-fit:cover;border-radius:2px}
+.site .round{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.site .round img{aspect-ratio:4/3;object-fit:cover;width:100%;border-radius:1px;filter:saturate(.92)}
+.verdict{display:flex;align-items:baseline;gap:.85rem;flex-wrap:wrap}
+.verdict .pct{font-family:var(--f-display);font-weight:500;font-size:3rem;line-height:1;font-variant-numeric:lining-nums}
+.verdict.good .pct{color:var(--green)} .verdict.bad .pct{color:var(--rust)}
+.pill{font-size:.66rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:.25rem .65rem;border-radius:999px}
+.pill.good{background:var(--green-soft);color:var(--green)} .pill.bad{background:var(--rust-soft);color:var(--rust)}
+.site h3{font-size:1.7rem}
+
+.satpair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+@media (max-width:560px){.satpair{grid-template-columns:1fr}}
+.sat{position:relative;border-radius:2px;overflow:hidden}
+.sat img{width:100%;aspect-ratio:1;object-fit:cover;transition:transform 1.2s var(--ease)}
+.sat:hover img{transform:scale(1.04)}
+.sat .tagline{position:absolute;left:.65rem;top:.65rem;right:.65rem;display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
+.sat .name{background:rgba(14,21,26,.8);color:#fff;font-size:.82rem;font-weight:600;padding:.32rem .6rem;border-radius:2px}
+.sat .num{background:rgba(14,21,26,.8);color:#fff;font-family:var(--f-display);font-weight:600;font-size:1.75rem;line-height:1;padding:.32rem .6rem;border-radius:2px;font-variant-numeric:lining-nums}
+.sat .num small{display:block;font-family:var(--f-body);font-weight:400;font-size:.62rem;letter-spacing:.06em;opacity:.8;margin-top:.25rem}
+.ringkey{display:flex;gap:1.25rem;flex-wrap:wrap;font-size:.78rem;color:var(--ink-2);margin-top:.55rem}
+
+/* ---------- diagnostic panel mock-up ---------- */
+.labelcard{background:var(--surface);box-shadow:0 0 0 1px var(--line-2);border-radius:3px;overflow:hidden;font-size:.9rem}
+.labelcard .hd{display:flex;justify-content:space-between;gap:1rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--line);align-items:baseline;flex-wrap:wrap}
+.labelcard .hd b{font-family:var(--f-display);font-weight:600;font-size:1.35rem}
+.labelcard .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.5rem 1rem;padding:.7rem 1.1rem;border-bottom:1px solid var(--line);align-items:center}
+.labelcard .row:last-child{border-bottom:0}
+.labelcard .k{color:var(--ink-2)}
+.labelcard .v{font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
+.mock{font-size:.66rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.status{display:inline-flex;align-items:center;gap:.45rem;font-weight:600}
+.status::before{content:"";width:.6rem;height:.6rem;border-radius:50%;background:currentColor}
+.status.good{color:var(--green)} .status.warn{color:var(--gold)} .status.bad{color:var(--rust)}
+
+.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1.25rem,3vw,2.5rem)}
+@media (max-width:760px){.actions{grid-template-columns:1fr}}
+.action{display:flex;flex-direction:column;gap:.45rem;border-top:1px solid var(--line-2);padding-top:1rem}
+.action .verb{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--green)}
+.action h3{font-size:1.45rem}
+.action p{color:var(--ink-2);font-size:.93rem}
+
+/* ---------- summary ---------- */
+.score{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.5rem,4vw,3.5rem)}
+@media (max-width:720px){.score{grid-template-columns:1fr}}
+.card{border-top:2px solid var(--ink);padding-top:1.25rem;display:flex;flex-direction:column;gap:1rem}
+.card.cov{border-color:var(--teal)} .card.tru{border-color:var(--rust)}
+.card .grade{font-family:var(--f-display);font-weight:500;font-size:2.3rem;line-height:1.02}
+.card.cov .grade{color:var(--teal)} .card.tru .grade{color:var(--rust)}
+.card ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.5rem;color:var(--ink-2);font-size:.95rem}
+.card li::marker{color:var(--gold)}
+.card li b{color:var(--ink)}
+
+footer{background:var(--basalt);color:var(--on-dark-2);font-size:.84rem}
+footer .inner{padding-block:4rem;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:3rem}
+@media (max-width:760px){footer .inner{grid-template-columns:1fr}}
+footer h3{font-family:var(--f-body);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--brass-pale);margin-bottom:.9rem;font-weight:600}
+footer ul{margin:0;padding-left:1rem;display:flex;flex-direction:column;gap:.5rem}
+footer a{color:var(--on-dark)}
+
+/* ---------- definitions and siting requirements ---------- */
+.defs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1.25rem,3vw,2.5rem)}
+@media (max-width:760px){.defs{grid-template-columns:1fr}}
+.def{border-top:1px solid var(--line-2);padding-top:1rem;display:flex;flex-direction:column;gap:.45rem}
+.def .term{font-family:var(--f-display);font-size:1.45rem;font-weight:600;line-height:1.15}
+.def p{font-size:.92rem;color:var(--ink-2)}
+.reqs{margin:0;padding:0;list-style:none;counter-reset:r;display:flex;flex-direction:column;gap:1.1rem}
+.reqs li{counter-increment:r;position:relative;padding:0 0 1.1rem 3rem;border-bottom:1px solid var(--line);font-size:.95rem;color:var(--ink-2);line-height:1.6}
+.reqs li:last-child{border-bottom:0;padding-bottom:0}
+.reqs li::before{content:counter(r);position:absolute;left:0;top:-.5rem;font-family:var(--f-display);font-size:2.3rem;font-weight:500;line-height:1;color:var(--green)}
+.reqs li b{color:var(--ink)}
+figure.plate img + img{margin:0}
+</style>
+
+</head>
+<body>
+<!-- ======================= HERO ======================= -->
+<header class="hero">
+  <img class="bg" src="assets/hero_landsat_idaho.jpg" alt="Satellite view of eastern Idaho: hundreds of green irrigated circles surrounded by tan desert and dark lava fields.">
+  <div class="inner gut wide">
+    <span class="kicker">USBR AgriMet weather network · Pacific Northwest</span>
+    <h1>How representative is the Pacific Northwest's <em>Evaporative Demand measurement network?</em></h1>
+    <p class="sub">AgriMet stations supply a standardized measure of evaporative demand, i.e., daily reference evapotranspiration (ETref) for irrigation scheduling and water management. We assessed the network on two aspects: spatial adequacy (are stations located where irrigated cropland needs them?) and station aridity (do station surroundings meet the standardized reference-surface conditions?).</p>
+    <p class="credit">Irrigated center pivots in desert and lava fields near Idaho Falls, July 2022. NASA Earth Observatory image by Lauren Dauphin, using Landsat data from the U.S. Geological Survey.</p>
+  </div>
+</header>
+
+<!-- ======================= BACKGROUND ======================= -->
+<section class="sec gut">
+  <div class="wide sidecar">
+    <div class="stack">
+      <span class="kicker">Background</span>
+      <h2>Reference ET and who uses it</h2>
+      <div class="prose">
+        <p>Each AgriMet station records air temperature, humidity, solar radiation and wind speed. From these, the ASCE-EWRI standardized Penman–Monteith equation computes reference evapotranspiration: the water use of a standardized reference (hypothetical) crop under that day's weather.</p>
+        <p>Crop water use is then estimated as <b>crop ET = Kc × ETref</b>, where the crop coefficient Kc accounts for crop type and growth stage. Irrigation scheduling, water-right determinations, irrigation system design and gridded ET products all depend on ETref, so any error in ETref carries into each of them.</p>
+      </div>
+    </div>
+    <figure class="evidence">
+      <img src="assets/photo_pivot_idaho.jpg" alt="A center-pivot sprinkler watering a green field below mountains in Idaho." style="border-radius:6px;aspect-ratio:7/5;object-fit:cover;width:100%">
+      <figcaption>Center-pivot irrigation, Idaho. To be efficient, run times are based on crop ET, which is computed from ETref. <span class="credit">Photo: Mark Olson, USDA NRCS (public domain).</span></figcaption>
+    </figure>
+  </div>
+  <div class="wide defs" style="margin-top:clamp(2rem,5vw,3rem)">
+    <div class="def"><span class="term">Evapotranspiration (ET)</span><p>Water lost to the atmosphere by evaporation from soil and plant surfaces plus transpiration through leaves.</p></div>
+    <div class="def"><span class="term">Reference ET (ETref)</span><p>ET from a standardized reference surface under local weather. It expresses the evaporative demand of the atmosphere, independent of crop type.</p></div>
+    <div class="def"><span class="term">Standardized reference surface</span><p>An extensive, uniform, actively growing crop that fully shades the ground and is not short of water: clipped grass 0.12 m tall (ETos) or alfalfa 0.50 m tall (ETrs).</p></div>
+  </div>
+  <p class="wide credit" style="margin-top:1rem">Definitions follow ASCE-EWRI (2005) and FAO Irrigation and Drainage Paper 56 (Allen et al., 1998).</p>
+</section>
+
+<!-- ======================= TWO ASSESSMENTS ======================= -->
+<section class="sec gut">
+  <div class="wide stack" style="gap:2rem">
+    <div class="stack col" style="margin-inline:0">
+      <span class="kicker">Two assessments</span>
+      <h2>Adequacy, and representativeness of the station surroundings</h2>
+      <p class="muted" style="max-width:62ch">ETref from a station is useful only where it represents the irrigated fields it serves. That depends on where stations sit relative to cropland, and on whether each station's surroundings match the reference surface the equation assumes.</p>
+    </div>
+    <div class="qs">
+      <div class="q cov"><span class="tag">Part 1 · Spatial adequacy</span><h3>Are stations located where cropland needs them?</h3><p>Geostatistical mapping of ETrs estimation confidence for every ~1 km cell across Oregon, Idaho and Washington, using 140 stations and 36 years of daily data.</p></div>
+      <div class="q tru"><span class="tag">Part 2 · Station surroundings</span><h3>Do station surroundings meet reference conditions?</h3><p>Satellite vegetation and land-cover indicators combined with nighttime humidity indicators for 197 stations in eight states, with records up to 45 years.</p></div>
+    </div>
+    <div class="stats" style="border-top:1px solid var(--line);padding-top:2rem">
+      <div class="stat"><div class="n">197</div><div class="l">stations evaluated across 8 western states</div></div>
+      <div class="stat"><div class="n">1980–2024</div><div class="l">period of daily station records</div></div>
+      <div class="stat"><div class="n">1 million+</div><div class="l">~1 km grid cells mapped for estimation confidence</div></div>
+      <div class="stat"><div class="n">10 m</div><div class="l">Sentinel-2 resolution for vegetation and land cover around each station</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PART 1 OPENER ======================= -->
+<section class="opener" id="coverage">
+  <img src="assets/photo_iss_american_falls.jpg" alt="" aria-hidden="true" style="object-position:50% 40%">
+  <div class="inner gut wide">
+    <span class="part">Part 1 · Spatial adequacy</span>
+    <h2>Are stations located where cropland needs them?</h2>
+    <p>140 core stations in Oregon, Idaho and Washington, 29 buffer stations in neighboring states, and 592,000 station-days of irrigation-season ETrs, 1989–2024.</p>
+    <p class="credit">Farmland around American Falls Reservoir, Idaho, from the International Space Station, June 2023. NASA astronaut photograph ISS069-E-20298.</p>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide sidecar">
+    <div class="stack">
+      <span class="kicker">Proximity versus representativeness</span>
+      <h2>Distance to the nearest station does not tell the full picture</h2>
+      <div class="prose">
+        <p>We estimated ETrs uncertainty everywhere with kriging, a geostatistical method that weighs the full configuration of surrounding stations, not only the closest one.</p>
+        <p>Distance to the nearest station explains <b>77%</b> of the variation in daily estimation uncertainty. The remaining 23% comes from station configuration: clustered stations duplicate each other's information, while an isolated station carries more weight.</p>
+      </div>
+    </div>
+    <div class="evidence diagrams">
+      <figure>
+        <svg viewBox="0 0 220 170" width="100%" role="img" aria-label="A field 15 miles from a station that is one of five clustered together.">
+          <g fill="#1D5E70"><circle cx="150" cy="55" r="6"/><circle cx="168" cy="40" r="6"/><circle cx="172" cy="68" r="6"/><circle cx="190" cy="52" r="6"/><circle cx="158" cy="30" r="6"/></g>
+          <line x1="150" y1="55" x2="70" y2="118" stroke="#B4532A" stroke-width="1.6" stroke-dasharray="4 3"/>
+          <rect x="58" y="112" width="24" height="24" fill="#6E9B5B"/>
+          <text x="70" y="156" text-anchor="middle" font-size="12" fill="#2A2622" font-family="Public Sans, sans-serif">15 mi</text>
+          <text x="214" y="18" text-anchor="end" font-size="12" fill="#2A2622" font-family="Public Sans, sans-serif">5 clustered stations</text>
+        </svg>
+        <figcaption><b>Near, but redundant.</b> Four of the five stations add little information beyond the first.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 220 170" width="100%" role="img" aria-label="A field 40 miles from an isolated station.">
+          <circle cx="188" cy="34" r="6" fill="#1D5E70"/>
+          <line x1="188" y1="34" x2="52" y2="118" stroke="#B4532A" stroke-width="1.6" stroke-dasharray="4 3"/>
+          <rect x="40" y="112" width="24" height="24" fill="#6E9B5B"/>
+          <text x="52" y="156" text-anchor="middle" font-size="12" fill="#2A2622" font-family="Public Sans, sans-serif">40 mi</text>
+          <text x="214" y="18" text-anchor="end" font-size="12" fill="#2A2622" font-family="Public Sans, sans-serif">isolated station</text>
+        </svg>
+        <figcaption><b>Farther, but carries more weight.</b> The network depends on this station over a large area.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide stack" style="gap:2rem">
+    <div class="sidecar">
+      <div class="stack">
+        <span class="kicker">Daily versus seasonal-total ETrs</span>
+        <h2>Confidence decays twice as fast for seasonal totals</h2>
+        <div class="prose">
+          <p>Confidence retained runs from 0% (the network provides no information; uncertainty equals regional variability) to 100% (the lowest uncertainty physically possible, set by measurement noise).</p>
+          <p>Daily ETrs anomalies are driven by large-scale weather systems and stay correlated over long distances. Seasonal totals depend on local terrain and climate and decorrelate over shorter distances.</p>
+        </div>
+      </div>
+      <div class="stats evidence">
+        <div class="stat"><div class="n" style="color:var(--teal)">224 km</div><div class="l">distance at which <b>daily</b> ETrs confidence falls to 50% (139 mi)</div></div>
+        <div class="stat"><div class="n" style="color:var(--teal)">119 km</div><div class="l">same threshold for <b>seasonal-total</b> ETrs (74 mi)</div></div>
+      </div>
+    </div>
+    <div class="plate">
+      <div class="compare-head"><span class="compare-lab">◂ Daily ETrs</span><span class="hint">Drag to compare</span><span class="compare-lab">Seasonal-total ETrs ▸</span></div>
+      <div class="compare">
+        <img src="assets/p1_confidence_daily.png" alt="Confidence map for daily ETrs: high nearly everywhere, lower along the far coast and northern Cascades.">
+        <div class="top"><img src="assets/p1_confidence_seasonal.png" alt="Confidence map for seasonal-total ETrs: large low-confidence areas across the Cascades, eastern Washington and central Idaho."></div>
+        <input type="range" id="cmpConf" min="0" max="100" value="50" step="0.5" aria-label="Slide to compare daily (left) and seasonal-total (right) confidence maps">
+        <span class="rule"></span><span class="knob" aria-hidden="true">◂▸</span>
+      </div>
+      <div class="ramp"><span>0% confidence retained</span><span class="bar"></span><span>100%</span></div>
+      <p class="cap">Kriging-based confidence retained across Oregon, Idaho and Washington: daily ETrs left of the divider, seasonal-total ETrs right of it. White dots: core stations.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide stack" style="gap:2rem">
+    <div class="sidecar">
+      <div class="stack">
+        <span class="kicker">Coverage of cropland</span>
+        <h2>18% of cropland is underserved for daily ETrs; 96% for seasonal totals</h2>
+        <div class="prose">
+          <p>Confidence retained places every location between two limits taken from the fitted variogram: 0% at the sill, where the network adds no information, and 100% at the nugget, the measurement-noise floor that no additional station can remove. A value of 80% means the network has removed 80% of the uncertainty it is able to remove at that location.</p>
+          <p>Cropland was classed as <b>underserved</b> below 80%, <b>adequately served</b> at 80–90% and <b>comfortably served</b> at 90% or above. Because the breaks are tied to each surface's own floor and ceiling rather than to percentiles of the data, a tier means the same share of removable uncertainty for daily and seasonal ETrs. For daily ETrs, the 80% break corresponds to a kriging standard deviation of about 0.84 mm/day, against a floor of 0.68 mm/day and 1.30 mm/day with no station information; 90% corresponds to about 0.77 mm/day. For seasonal totals, 80% corresponds to about 0.41 ac-ft/ac, against a floor of 0.37 and 0.53 with no information.</p>
+          <p>The same breaks were applied to both surfaces without re-tuning, so differences between them reflect the variograms, not the choice of threshold. A simpler scale anchored at zero instead of the nugget was rejected: with the seasonal surface's large nugget, it falls below 50% within a few kilometers of almost every station.</p>
+          <p>For daily ETrs, 82% of cropland is adequately or comfortably served. Underserved cropland is concentrated along the coast, in parts of the Columbia Basin and in a few interior valleys.</p>
+          <p>Under the same thresholds, 96% of cropland is underserved for seasonal-total ETrs, a direct result of the shorter correlation distance above.</p>
+          <p>Of four sub-regions, the Snake River Plain is the best served and the West Cascades and Coastal sub-region the least, reflecting sparse stations relative to high day-to-day variability near the coast.</p>
+        </div>
+      </div>
+      <div class="evidence chart plate" id="farmbars" aria-label="Share of cropland by service class, daily versus seasonal-total ETrs."></div>
+    </div>
+    <div class="plate">
+      <div class="compare-head"><span class="compare-lab">◂ Daily ETrs</span><span class="hint">Drag to compare</span><span class="compare-lab">Seasonal-total ETrs ▸</span></div>
+      <div class="compare">
+        <img src="assets/p1_farmland_daily.png" alt="Cropland service map, daily: mostly adequately served, with underserved areas along the coast and in northern Washington.">
+        <div class="top"><img src="assets/p1_farmland_seasonal.png" alt="Cropland service map, seasonal totals: nearly all cropland underserved."></div>
+        <input type="range" id="cmpFarm" min="0" max="100" value="50" step="0.5" aria-label="Slide to compare daily (left) and seasonal-total (right) cropland service maps">
+        <span class="rule"></span><span class="knob" aria-hidden="true">◂▸</span>
+      </div>
+      <div class="legend"><span><i style="background:#C4572A"></i>Underserved (&lt;80%)</span><span><i style="background:#E2B55B"></i>Adequately served (80–90%)</span><span><i style="background:#2E7D67"></i>Comfortably served (≥90%)</span><span><i style="background:#E4E1D6;border:1px solid #cfcabb"></i>Not cropland</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="inner gut wide">
+    <div class="big">≈ 2 hrs</div>
+    <div>
+      <p>In underserved cropland, the typical daily ETrs uncertainty is equivalent to <b>about two hours of center-pivot run time</b> on an average irrigation-season day.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide sidecar flip">
+    <div class="stack">
+      <span class="kicker">Network growth</span>
+      <h2>The real network is within 1.8–2.6% of an optimal design</h2>
+      <div class="prose">
+        <p>We built an optimal network from scratch with the same kriging-variance objective and compared it with AgriMet's actual growth from 20 stations in 1989 to 140 in 2024.</p>
+        <p>At matched network size, the optimal design reduces cropland-weighted uncertainty by only <b>1.8–2.6%</b> relative to the real network. Incremental siting decisions over 36 years produced a near-optimal configuration.</p>
+      </div>
+    </div>
+    <div class="evidence plate chart" id="growth" aria-label="Line chart: cropland-weighted daily uncertainty falls as stations are added; the real network closely tracks the optimal design."></div>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide sidecar">
+    <div class="stack">
+      <span class="kicker">Blind validation</span>
+      <h2>2024 additions ranked at a median 93rd percentile</h2>
+      <div class="prose">
+        <p>28 stations were added in 2024. A model trained only on pre-2022 data, with no knowledge of those stations, ranked every candidate location by how much a new station there would reduce uncertainty.</p>
+        <p>The actual 2024 stations fell at a median <b>93rd percentile</b> of that ranking, against an expected 50th for random siting. Astoria (99th) and Tillamook (98th) ranked highest.</p>
+      </div>
+    </div>
+    <div class="evidence plate chart" id="picks" aria-label="Dot strip of the 28 stations added in 2024 by priority percentile; all fall between the 75th and 99th percentiles."></div>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide sidecar flip">
+    <div class="stack">
+      <span class="kicker">Station importance</span>
+      <h2>Astoria is the most critical station; the Idaho Falls cluster is the most redundant</h2>
+      <div class="prose">
+        <p>Each station was removed in turn to measure the increase in network-wide uncertainty. Removing <b>Astoria</b> produces more than twice the increase of any other station, because it is the only source of information for a long stretch of coastline.</p>
+        <p>The closely spaced stations near Idaho Falls (Idaho National Laboratory area) are the most redundant group: removing any one changes network uncertainty very little.</p>
+        <p>Daily and seasonal importance agree only moderately. Salmon, Idaho, and Brookings and Tillamook, Oregon, rank much higher for seasonal totals than for daily values.</p>
+      </div>
+    </div>
+    <div class="evidence plate">
+      <img src="assets/p1_station_importance.png" alt="Map of the 140 core stations sized and shaded by leave-one-out importance; Astoria on the north Oregon coast is largest; a dashed circle marks a cluster of small dots near Idaho Falls.">
+      <p class="cap">Leave-one-out importance for daily ETrs. Larger, darker dots: greater increase in uncertainty when the station is removed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= BRIDGE ======================= -->
+<section class="sec gut" style="background:var(--surface)">
+  <div class="wide sidecar">
+    <figure class="evidence">
+      <img src="assets/station_asto.jpg" alt="The Astoria AgriMet station: a metal tripod with sensors in a green, grazed pasture." style="border-radius:6px;aspect-ratio:4/3;object-fit:cover;width:100%">
+      <figcaption>Astoria station, installed 2024, in green pasture. <span class="credit">Photo: U.S. Bureau of Reclamation, AgriMet.</span></figcaption>
+    </figure>
+    <div class="stack">
+      <span class="kicker">From Part 1 to Part 2</span>
+      <h2>Spatial adequacy assumes every station's surroundings are representative</h2>
+      <div class="prose">
+        <p>Part 1 treats each station's ETrs as representative of a well-watered reference surface. If a station sits in dry surroundings, its ETrs is biased, no matter how well placed it is.</p>
+        <p>Part 2 tests that assumption station by station. Astoria satisfies both: it is the network's most critical location, and its growing-season maximum relative humidity averages 97.5%, among the highest in the network.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PART 2 OPENER ======================= -->
+<section class="opener" id="aridity">
+  <img src="assets/photo_morrow_county.jpg" alt="" aria-hidden="true" style="object-position:50% 92%">
+  <div class="inner gut wide">
+    <span class="part">Part 2 · Station surroundings</span>
+    <h2>Do station surroundings meet reference conditions?</h2>
+    <p>197 stations across Oregon, Idaho, Montana, Washington, Utah, Nevada, California and Wyoming. Records from 1980 to 2024.</p>
+    <p class="credit">Irrigated fields below non-irrigated hills, Morrow County, Oregon. Photo: Sam Beebe/Ecotrust, CC BY-SA 3.0.</p>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide stack" style="gap:2rem">
+    <div class="sidecar">
+      <div class="stack">
+        <span class="kicker">Siting requirements</span>
+        <h2>A reference ET station must sit within a well-watered reference surface</h2>
+        <div class="prose">
+          <p>The Penman–Monteith equation applies a low surface resistance. It assumes the surface under the sensors evaporates at the reference rate and that air temperature, humidity and wind near the ground are in equilibrium with that well-watered surface. That holds only when three conditions are met at the site.</p>
+          <p>Where they are not met, the station records <b>station aridity</b>: a departure of its surroundings from the well-watered reference condition.</p>
+        </div>
+      </div>
+      <ol class="evidence reqs">
+        <li><b>Adequate fetch.</b> Uniform vegetation upwind for about 100 times the sensor height in all directions: 150–200 m for sensors at 1.5–2 m. ASCE-EWRI defines the reference as an expanse of at least 100 m. Under neutral and stable conditions the required fetch is closer to 300:1, and well-watered vegetation within about 1 km upwind is needed to condition the boundary layer.</li>
+        <li><b>Well-watered, actively transpiring vegetation</b> within that fetch, with no water stress.</li>
+        <li><b>Minimal advection</b> of sensible heat and dry air from non-evaporating surfaces. A 5–10 m patch of grass surrounded by dry ground provides essentially no conditioning of temperature and humidity at wind speeds above 2 m/s.</li>
+      </ol>
+    </div>
+    <div class="schem">
+      <svg viewBox="0 0 980 430" role="img" aria-labelledby="schT schD">
+        <title id="schT">Reference condition met versus violated</title>
+        <desc id="schD">Left: station within well-watered vegetation; latent heat flux dominates, overlying air is cool and humid, minimum temperature approaches dew point, ETref is representative. Right: station on a small irrigated plot in dry surroundings; sensible heat dominates, warm dry air is advected to the sensors, minimum temperature stays above dew point, ETref is biased high.</desc>
+        <defs>
+          <marker id="ah-b" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--sch-blue)"/></marker>
+          <marker id="ah-r" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--sch-red)"/></marker>
+          <g id="stn">
+            <line x1="0" y1="0" x2="0" y2="-150" stroke="var(--sch-metal)" stroke-width="4"/>
+            <line x1="0" y1="-60" x2="-26" y2="0" stroke="var(--sch-metal)" stroke-width="3"/>
+            <line x1="0" y1="-60" x2="26" y2="0" stroke="var(--sch-metal)" stroke-width="3"/>
+            <line x1="-34" y1="-140" x2="34" y2="-140" stroke="var(--sch-metal)" stroke-width="3"/>
+            <path d="M28,-140 v-14 M22,-156 h12 M28,-156 a4,4 0 1 1 0.1,0" stroke="var(--sch-metal)" stroke-width="2.5" fill="none"/>
+            <rect x="-30" y="-152" width="12" height="18" rx="2" fill="var(--sch-box)" stroke="var(--sch-metal)" stroke-width="2"/>
+            <rect x="6" y="-104" width="22" height="30" rx="2" fill="var(--sch-box)" stroke="var(--sch-metal)" stroke-width="2"/>
+          </g>
+          <g id="plant"><path d="M0,0 q-6,-14 -2,-26 M0,0 q5,-12 2,-24 M0,0 q-12,-8 -14,-16 M0,0 q12,-8 14,-16" stroke="var(--sch-green-2)" stroke-width="3" fill="none" stroke-linecap="round"/></g>
+          <g id="shrub"><path d="M0,0 q-4,-10 -12,-12 M0,0 q2,-12 -2,-18 M0,0 q6,-10 12,-12" stroke="var(--sch-tan-2)" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+        </defs>
+
+        <rect x="0" y="0" width="470" height="430" rx="10" fill="var(--sch-sky)"/>
+        <rect x="0" y="318" width="470" height="112" fill="var(--sch-green)"/>
+        <g>
+          <use href="#plant" x="30" y="322"/><use href="#plant" x="75" y="326"/><use href="#plant" x="120" y="322"/><use href="#plant" x="165" y="326"/><use href="#plant" x="300" y="322"/><use href="#plant" x="345" y="326"/><use href="#plant" x="390" y="322"/><use href="#plant" x="435" y="326"/>
+          <use href="#plant" x="52" y="360"/><use href="#plant" x="98" y="364"/><use href="#plant" x="143" y="360"/><use href="#plant" x="190" y="364"/><use href="#plant" x="280" y="364"/><use href="#plant" x="325" y="360"/><use href="#plant" x="370" y="364"/><use href="#plant" x="415" y="360"/>
+        </g>
+        <g class="flow" stroke="var(--sch-blue)" stroke-width="2.5" fill="none" marker-end="url(#ah-b)" stroke-linecap="round">
+          <path d="M60,300 q-8,-20 0,-40 q8,-20 0,-40"/><path d="M140,300 q-8,-20 0,-40 q8,-20 0,-40"/><path d="M330,300 q-8,-20 0,-40 q8,-20 0,-40"/><path d="M410,300 q-8,-20 0,-40 q8,-20 0,-40"/>
+        </g>
+        <use href="#stn" x="235" y="330"/>
+        <text x="100" y="186" text-anchor="middle" font-size="15" font-weight="600" fill="var(--sch-blue)">Latent heat flux</text>
+        <text x="100" y="204" text-anchor="middle" font-size="15" font-weight="600" fill="var(--sch-blue)">dominates</text>
+        <text x="370" y="186" text-anchor="middle" font-size="15" font-weight="600" fill="var(--sch-blue)">Cool, humid air</text>
+        <text x="370" y="204" text-anchor="middle" font-size="15" font-weight="600" fill="var(--sch-blue)">Tmin ≈ Tdew</text>
+        <text x="235" y="408" text-anchor="middle" font-size="16" font-weight="600" fill="#FFFFFF">Well-watered fetch in all directions</text>
+        <rect x="95" y="26" width="280" height="58" rx="29" fill="var(--sch-box)" stroke="var(--sch-green-2)" stroke-width="2"/>
+        <text x="235" y="50" text-anchor="middle" font-size="12" letter-spacing="1.2" fill="var(--sch-green-2)" font-family="IBM Plex Mono, monospace">REFERENCE CONDITION MET</text>
+        <text x="235" y="72" text-anchor="middle" font-size="17" font-weight="700" fill="var(--sch-green-2)">ETref representative</text>
+
+        <rect x="510" y="0" width="470" height="430" rx="10" fill="var(--sch-sky-dry)"/>
+        <rect x="510" y="318" width="470" height="112" fill="var(--sch-tan)"/>
+        <rect x="705" y="318" width="60" height="14" fill="var(--sch-green)"/>
+        <g><use href="#shrub" x="545" y="345"/><use href="#shrub" x="610" y="372"/><use href="#shrub" x="655" y="336"/><use href="#shrub" x="830" y="352"/><use href="#shrub" x="890" y="378"/><use href="#shrub" x="945" y="340"/></g>
+        <g class="flow adv" stroke="var(--sch-red)" stroke-width="3" fill="none" marker-end="url(#ah-r)" stroke-linecap="round"><path d="M540,250 h120"/><path d="M560,280 h100"/></g>
+        <g class="flow" stroke="var(--sch-red)" stroke-width="2.5" fill="none" marker-end="url(#ah-r)" stroke-linecap="round"><path d="M880,312 v-90"/></g>
+        <use href="#stn" x="735" y="330"/>
+        <text x="600" y="214" text-anchor="middle" font-size="15" font-weight="600" fill="var(--sch-red)">Advection of</text>
+        <text x="600" y="232" text-anchor="middle" font-size="15" font-weight="600" fill="var(--sch-red)">warm, dry air</text>
+        <text x="880" y="186" text-anchor="middle" font-size="15" font-weight="600" fill="var(--sch-red)">Sensible heat</text>
+        <text x="880" y="204" text-anchor="middle" font-size="15" font-weight="600" fill="var(--sch-red)">dominates</text>
+        <text x="745" y="408" text-anchor="middle" font-size="16" font-weight="600" fill="#FFFFFF">Irrigated plot, dry fetch</text>
+        <rect x="605" y="26" width="280" height="58" rx="29" fill="var(--sch-box)" stroke="var(--sch-red)" stroke-width="2"/>
+        <text x="745" y="50" text-anchor="middle" font-size="12" letter-spacing="1.2" fill="var(--sch-red)" font-family="IBM Plex Mono, monospace">REFERENCE CONDITION VIOLATED</text>
+        <text x="745" y="72" text-anchor="middle" font-size="17" font-weight="700" fill="var(--sch-red)">ETref biased high</text>
+      </svg>
+      <div class="chain">
+        <div><b>Warmer, drier air at the sensors</b>Less ET in the fetch shifts energy from latent to sensible heat, raising air temperature and vapor pressure deficit.</div>
+        <div><b>ETref overestimated</b>Penman–Monteith ETref rises with temperature and vapor pressure deficit, so the bias is systematic and in one direction.</div>
+        <div><b>Errors propagate</b>Crop ET (Kc × ETref), irrigation scheduling, system sizing, water-rights accounting and gridded ET products inherit the bias.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="inner gut wide">
+    <div class="big">17%</div>
+    <div>
+      <p>Air temperature and dew point from arid, non-irrigated sites in southern Idaho overestimated seasonal ETrs by <b>17% (210 mm)</b> relative to nearby irrigated sites. Conditioning weather data to well-watered conditions indicates overstatement of ETos by up to <b>25%</b> in southern Idaho and 8% in eastern Nevada.</p>
+      <p class="credit">Allen, Pruitt &amp; Jensen (1983); Allen et al. (2021).</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide stack" style="gap:2rem">
+    <div class="col stack" style="margin-inline:0">
+      <span class="kicker">Examples</span>
+      <h2>Well-watered fetch versus dry fetch</h2>
+      <p class="muted" style="max-width:62ch">Station photos with views north, east, south and west. Values from each station's growing-season record.</p>
+    </div>
+    <div class="pair">
+      <div class="site">
+        <img class="main" src="assets/station_tlmo.jpg" alt="Tillamook station in a lush green pasture with red barns and forested hills behind.">
+        <div class="round" aria-label="Views north, east, south and west from the Tillamook station: green pasture in every direction.">
+          <img src="assets/station_tlmo_n.jpg" alt=""><img src="assets/station_tlmo_e.jpg" alt=""><img src="assets/station_tlmo_s.jpg" alt=""><img src="assets/station_tlmo_w.jpg" alt="">
+        </div>
+        <h3>Tillamook, Oregon</h3>
+        <div class="verdict good"><span class="pct">97.9%</span><span class="pill good">Well-watered fetch</span></div>
+        <p class="muted small">Mean growing-season RHmax, the highest in the network. MDD exceeded 2&nbsp;°C on 2% of growing-season days (2024). Green pasture in all directions.</p>
+      </div>
+      <div class="site">
+        <img class="main" src="assets/station_gcdw.jpg" alt="Grand Coulee Dam station in grey sagebrush above a reservoir, with dry hills beyond.">
+        <div class="round" aria-label="Views north, east, south and west from the Grand Coulee Dam station: sagebrush, rock and water.">
+          <img src="assets/station_gcdw_n.jpg" alt=""><img src="assets/station_gcdw_e.jpg" alt=""><img src="assets/station_gcdw_s.jpg" alt=""><img src="assets/station_gcdw_w.jpg" alt="">
+        </div>
+        <h3>Grand Coulee Dam, Washington</h3>
+        <div class="verdict bad"><span class="pct">73%</span><span class="pill bad">Dry fetch</span></div>
+        <p class="muted small">Mean growing-season RHmax. MDD exceeded 2&nbsp;°C on 91% of growing-season days (2002–2024). Non-irrigated sagebrush and rock; no well-watered vegetation within the fetch.</p>
+      </div>
+    </div>
+    <p class="credit">Station photos: U.S. Bureau of Reclamation, AgriMet station pages (public domain).</p>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide stack" style="gap:2.25rem">
+    <div class="col stack" style="margin-inline:0">
+      <span class="kicker">Diagnostic framework</span>
+      <h2>Four indicators: two describe the surface, two describe the atmospheric response</h2>
+      <p class="muted" style="max-width:66ch">No single variable captures station aridity. Surface indicators show what surrounds a station; humidity indicators show whether the air at the sensors behaves as it would over a well-watered surface, and provide a multidecadal record that satellites cannot.</p>
+    </div>
+    <div class="clues">
+      <div class="clue"><span class="src">Surface · Sentinel-2, 10 m</span><h3>NDVI</h3><p>Normalized difference vegetation index, (NIR − Red)/(NIR + Red), a measure of green, actively transpiring vegetation. Growing-season values of 0.6 or more indicate dense vegetation consistent with reference conditions; 0.4 or less indicates sparse or moisture-limited vegetation.</p></div>
+      <div class="clue"><span class="src">Surface · Google Dynamic World, 10 m</span><h3>Land use and land cover</h3><p>Share of crops, grass, trees, shrub and scrub, built, bare and water around each station. Identifies the type of surface, but not its water status: cropland may be irrigated or dryland.</p></div>
+      <div class="clue"><span class="src">Atmosphere · station record</span><h3>Mean dew point depression (MDD)</h3><p>MDD = Tmin − Tdew. Over a well-watered surface, nighttime cooling brings air close to saturation, so daily minimum temperature approaches the dew point. Over dry surroundings, Tmin stays well above Tdew. Summarized as the share of growing-season days with MDD above 1, 2, 3, 4 and 5&nbsp;°C.</p></div>
+      <div class="clue"><span class="src">Atmosphere · station record</span><h3>Nighttime humidity (RHmax)</h3><p>Daily maximum relative humidity, normally reached near dawn. It approaches 100% at reference sites; values consistently below 80–90% indicate aridity of the measurement environment or sensor calibration drift. Summarized as the share of days below 90, 80, 70 and 60%.</p></div>
+    </div>
+    <div class="sidecar">
+      <div class="prose">
+        <p>Surface indicators were computed in circular buffers of <b>100, 300, 1,000 and 2,000 m</b>, spanning the local, fetch, boundary-layer and regional scales. Humidity indicators were computed for the full year and for the growing season (1 April to 30 September).</p>
+        <p>Records were quality-controlled with the open-source agweather-qaqc package. Wind speed was adjusted to 2 m using the anemometer height in effect on each date, and reported station elevations were checked against the USGS 10 m elevation model.</p>
+        <p class="muted small">Under reference conditions in arid and semiarid climates, Tdew can still be 2–5&nbsp;°C below Tmin because of regional dryness, so no single MDD threshold transfers between regions. This is why the framework uses several thresholds and combines indicators.</p>
+      </div>
+      <div class="evidence plate chart" id="dewtest" aria-label="Two schematic overnight traces: over a well-watered fetch air temperature falls to the dew point by dawn; over a dry fetch a gap remains."></div>
+    </div>
+    <div class="stats" style="border-top:1px solid var(--line);padding-top:2rem">
+      <div class="stat"><div class="n">197</div><div class="l">stations: OR 70, ID 52, MT 27, WA 21, UT 19, NV 4, CA 2, WY 2</div></div>
+      <div class="stat"><div class="n">3,510</div><div class="l">station-years of humidity records (from 1980)</div></div>
+      <div class="stat"><div class="n">3,336</div><div class="l">station-years of dew point records (from 1989)</div></div>
+      <div class="stat"><div class="n">4</div><div class="l">buffer radii, 100 m to 2 km, for 2021–2024 satellite composites</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide stack" style="gap:2rem">
+    <div class="stack col" style="margin-inline:0">
+      <div class="stack">
+        <span class="kicker">Finding 1 · Land cover</span>
+        <h2>Cropland dominates around two-thirds of stations, but most surroundings are mixed</h2>
+        <div class="prose">
+          <p>At the 300 m buffer, cropland is the dominant class at about two-thirds of stations, consistent with the network's purpose. Built surfaces and grass are next, at roughly 10% of stations each.</p>
+          <p>Only <b>41%</b> of stations have a single class covering 80% or more of the 300 m buffer. The other <b>59%</b> sit in mixed surroundings, where part of the fetch is a different surface from the one beneath the sensors.</p>
+        </div>
+      </div>
+    </div>
+      <figure class="plate">
+        <img src="assets/fig3_landcover_sankey.jpg" alt="Sankey diagram: of 197 stations, 130 have crops as the dominant 300 m class, then grass 20, built 18, trees 10, water 8, shrub and scrub 7, bare 4; 81 stations (41%) have a dominant class covering at least 80% of the buffer and 116 (59%) are mixed.">
+        <p class="cap">Dominant land cover within 300 m of each station (left), split into stations where one class covers at least 80% of the buffer (center) and mixed stations (right). Google Dynamic World, growing seasons 2021–2024.</p>
+      </figure>
+    <figure class="plate">
+      <div class="twoup">
+        <img src="assets/fig6_landcover_maps.jpg" alt="Four maps of dominant land cover at 100, 300, 1,000 and 2,000 m around each station; crops dominate, with built, water and trees at some stations.">
+        <img src="assets/fig6_ndvi_maps.jpg" alt="Four maps of mean growing-season NDVI at 100, 300, 1,000 and 2,000 m around each station; values mostly 0.2 to 0.5, higher in western Oregon.">
+      </div>
+      <p class="cap">Dominant land cover (left) and mean growing-season NDVI (right) at four buffer radii for all 197 stations.</p>
+    </figure>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide sidecar flip">
+    <div class="stack">
+      <span class="kicker">Finding 2 · Vegetation</span>
+      <h2>Mean NDVI around stations is 0.33, below the 0.6 associated with reference vegetation</h2>
+      <div class="prose">
+        <p>Growing-season NDVI in the 300 m buffer averaged <b>0.33</b> across the network (median 0.34, range about 0 to 0.55). No station's mean reached 0.6.</p>
+        <p>NDVI was highest in the wetter western Oregon and western Montana sectors, where values of 0.50–0.55 corresponded to well-irrigated alfalfa and row crops. Stations next to open water or bright built surfaces had values near zero.</p>
+      </div>
+    </div>
+    <div class="evidence plate chart" id="ndvistrip" aria-label="Scale of NDVI from 0 to 0.8 marking the network mean 0.33, the maximum station mean 0.55, the 0.4 sparse threshold and the 0.6 reference threshold."></div>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide stack" style="gap:1.75rem">
+    <div class="sidecar">
+      <div class="stack">
+        <span class="kicker">Finding 3 · Nighttime humidity</span>
+        <h2>At the median station, MDD exceeds 2&nbsp;°C on 42% of growing-season days</h2>
+        <div class="prose">
+          <p>Growing-season MDD averaged <b>2.08&nbsp;°C</b> (median 1.81&nbsp;°C; range −2.45 to 10.24&nbsp;°C). MDD exceeded 2&nbsp;°C on a median <b>42.4%</b> of growing-season days, and exceeded 5&nbsp;°C on a median 14.0%. At 70 of 197 stations, MDD exceeded 5&nbsp;°C on more than a quarter of growing-season days.</p>
+          <p>Growing-season RHmax averaged <b>84.6%</b> (median 86.3%), below the 95–100% expected at well-irrigated sites. RHmax fell below 80% on a median 25.2% of growing-season days. The lowest values were in the Great Basin (Snowville South, UT, 56.8%); the highest on the Oregon coast (Tillamook 97.9%, Astoria 97.5%, Bandon 97.2%).</p>
+          <p>The two humidity indicators agree closely across stations (Spearman ρ = −0.945), confirming they track the same process. The frequency of RHmax below 80% matches or exceeds values reported for the Oklahoma Mesonet, where station aridity was first characterized at network scale.</p>
+        </div>
+      </div>
+      <div class="evidence plate chart" id="statebars" aria-label="Bar chart of mean share of growing-season days with MDD above 2 °C by state: Oregon 30%, Montana 40%, Idaho 50%, Washington 58%, Nevada 62%, Utah 66%."></div>
+    </div>
+    <div class="plate chart" id="stationmap" aria-label="Map of 197 stations across eight western states colored by the share of growing-season days with MDD above 2 °C."></div>
+    <figure class="plate">
+      <div class="twoup">
+        <img src="assets/fig5_mdd_maps.jpg" alt="Five maps of the share of growing-season days with MDD above 1, 2, 3, 4 and 5 °C at each station.">
+        <img src="assets/fig5_rhmax_maps.jpg" alt="Four maps of the share of growing-season days with RHmax below 90, 80, 70 and 60% at each station.">
+      </div>
+      <p class="cap">All thresholds: share of growing-season days with MDD above 1–5&nbsp;°C (left) and RHmax below 90–60% (right).</p>
+    </figure>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide sidecar">
+    <div class="stack">
+      <span class="kicker">Finding 4 · Local, not regional</span>
+      <h2>Nearby stations under the same climate differ by a median 14 percentage points</h2>
+      <div class="prose">
+        <p>We compared 77 station pairs less than 25 km apart and within 150 m in elevation, so that both stations share the same regional climate. The share of growing-season days with MDD above 2&nbsp;°C differed by a median <b>14.1 percentage points</b>, and by up to <b>75.3</b>.</p>
+        <p>Differences this large between neighbors cannot come from regional weather. They reflect the surface around each station.</p>
+        <p class="muted small">Example pair from the study data, 9 km apart: the Idaho Falls station, in town beside the river, exceeded 2&nbsp;°C on 77% of growing-season days; Osgood, within irrigated pivots, on 19% (shared years 2014–2024).</p>
+      </div>
+    </div>
+    <div class="evidence stack" style="gap:.5rem">
+      <div class="satpair">
+        <div class="sat"><img src="assets/sat_ifai.jpg" alt="Aerial view centered on the Idaho Falls station: houses, roads, rail yards and the Snake River."><div class="tagline"><span class="name">Idaho Falls</span><span class="num">77%<small>MDD &gt; 2&nbsp;°C</small></span></div></div>
+        <div class="sat"><img src="assets/sat_osgi.jpg" alt="Aerial view centered on the Osgood station: green center-pivot circles and harvested fields."><div class="tagline"><span class="name">Osgood</span><span class="num">19%<small>MDD &gt; 2&nbsp;°C</small></span></div></div>
+      </div>
+      <div class="ringkey"><span>Inner ring: 300 m</span><span>Outer ring: 2 km</span></div>
+      <p class="credit">Imagery: USGS National Map, orthoimagery (public domain).</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide stack" style="gap:2rem">
+    <div class="sidecar flip">
+      <div class="stack">
+        <span class="kicker">Finding 5 · Surface and humidity</span>
+        <h2>Greener fetch, fewer high-MDD days; the link strengthens out to 2 km</h2>
+        <div class="prose">
+          <p>Growing-season NDVI at 300 m was negatively correlated with MDD (Spearman ρ = −0.32). Regression slopes were negative at every MDD threshold, with R² of 0.12–0.14.</p>
+          <p>The relationship strengthened as the buffer widened. For MDD above 5&nbsp;°C, R² rose from 0.10 at 100 m to <b>0.24 at 2,000 m</b>, and the correlation with mean MDD reached ρ = −0.43 at 2 km. The surrounding landscape well beyond the immediate footprint conditions the air reaching the sensors.</p>
+          <p>Class means rose steadily from tree-dominated surroundings (mean MDD −0.1&nbsp;°C; above 2&nbsp;°C on 19% of days) through grass, cropland and shrub–scrub to bare ground (6.1&nbsp;°C; 76% of days).</p>
+          <p class="muted small">R² values are modest because elevation, regional advection, soil water and crop stage also affect humidity. NDVI is a necessary but not sufficient indicator, which is why it is paired with humidity indicators. RHmax relationships followed the same pattern with lower R².</p>
+        </div>
+      </div>
+      <div class="evidence plate chart" id="r2chart" aria-label="Line chart of R squared between NDVI and the share of days with MDD above 1 and above 5 °C, by buffer radius from 100 m to 2,000 m; R squared rises with radius."></div>
+    </div>
+    <figure class="plate">
+      <img src="assets/fig7_ndvi_mdd_scatter.jpg" alt="Five scatter plots of mean growing-season NDVI at 300 m versus the share of days with MDD above 1 to 5 °C, each with a negative regression line, R squared 0.12 to 0.14.">
+      <p class="cap">Mean growing-season NDVI (300 m) against the share of growing-season days with MDD above each threshold. One point per station, colored by elevation.</p>
+    </figure>
+  </div>
+</section>
+
+<section class="sec gut">
+  <div class="wide sidecar">
+    <div class="stack">
+      <span class="kicker">Finding 6 · Cropland is not the same as irrigated land</span>
+      <h2>Cropland fraction alone does not predict MDD</h2>
+      <div class="prose">
+        <p>The fraction of cropland within 2 km was essentially uncorrelated with station-mean MDD (ρ ≈ 0.07). A land-cover label cannot separate irrigated from dryland crops.</p>
+        <p>One Utah station, Blue Creek, has <b>93% cropland</b> in its 2 km buffer, yet averaged a growing-season MDD of <b>8.1&nbsp;°C</b> and RHmax of <b>63%</b>, values typical of bare ground. The surrounding fields are non-irrigated grain.</p>
+        <p>Networks therefore need to report humidity diagnostics together with land-cover descriptors.</p>
+      </div>
+    </div>
+    <div class="evidence stack" style="gap:.5rem">
+      <div class="sat"><img src="assets/sat_blcu.jpg" alt="Aerial view of the Blue Creek station in Utah: tan, non-irrigated grain fields and dry hills."><div class="tagline"><span class="name">Blue Creek, Utah</span><span class="num">8.1&nbsp;°C<small>mean GS MDD</small></span></div></div>
+      <div class="ringkey"><span>Inner ring: 300 m</span><span>Outer ring: 2 km</span></div>
+      <p class="credit">Imagery: USGS National Map, orthoimagery (public domain).</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec gut" style="background:var(--surface)">
+  <div class="wide stack" style="gap:2.25rem">
+    <div class="sidecar">
+      <div class="stack">
+        <span class="kicker">Implications</span>
+        <h2>Report aridity diagnostics alongside ETref</h2>
+        <div class="prose">
+          <p>Current standards say where a reference station should be, but networks rarely report whether each station meets them. Users can tell whether ETref can be calculated from the data, but not whether it should be used without adjustment.</p>
+          <p>The framework classifies stations as <b>reference-quality, marginal or non-reference</b>. It uses routinely archived station data and free 10 m satellite products, so it can be added as a reporting layer without new instrumentation.</p>
+        </div>
+      </div>
+      <div class="evidence stack" style="gap:.5rem">
+        <span class="mock">Illustrative layout · indicator values from study data</span>
+        <div class="labelcard" role="group" aria-label="Illustrative station diagnostic panel for Blue Creek, Utah">
+          <div class="hd"><b>Blue Creek, UT</b><span class="small muted">Growing-season diagnostics</span></div>
+          <div class="row"><span class="k">Mean MDD</span><span class="v">8.1 °C</span></div>
+          <div class="row"><span class="k">Mean RHmax</span><span class="v">63%</span></div>
+          <div class="row"><span class="k">Cropland within 2 km</span><span class="v">93%</span></div>
+          <div class="row"><span class="k">Diagnostic class</span><span class="status bad">Non-reference</span></div>
+        </div>
+        <div class="labelcard" role="group" aria-label="Illustrative station diagnostic panel for Tillamook, Oregon">
+          <div class="hd"><b>Tillamook, OR</b><span class="small muted">Growing-season diagnostics</span></div>
+          <div class="row"><span class="k">Mean RHmax</span><span class="v">97.9%</span></div>
+          <div class="row"><span class="k">Days with MDD &gt; 2 °C</span><span class="v">2%</span></div>
+          <div class="row"><span class="k">Diagnostic class</span><span class="status good">Reference-quality</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="action"><span class="verb">Report</span><h3>Publish class and indicators</h3><p>Report seasonal indicator values and diagnostic class with published ETref, and flag non-reference days (for example, MDD above 2&nbsp;°C).</p></div>
+      <div class="action"><span class="verb">Adjust</span><h3>Correct flagged days only</h3><p>Marginal stations: estimate Tdew = Tmin − Ko. Non-reference stations: temperature adjustments, which reduced overestimation from 16–19% to 4–9% in central Washington. Blending-height conditioning removed about 73% of midsummer ETo bias in an Idaho test.</p></div>
+      <div class="action"><span class="verb">Prioritize</span><h3>Calibration and siting</h3><p>Exclude or down-weight non-reference stations when calibrating gridded ET products, and target siting fixes, such as maintaining an irrigated buffer or revising mowing practice, where scores are worst.</p></div>
+    </div>
+    <p class="muted small" style="max-width:70ch">Limitations: circular buffers approximate a footprint that is actually fan-shaped and depends on wind and stability; the NDVI–humidity relationship (|ρ| ≈ 0.43 at 2 km) is weaker than in Oklahoma (|ρ| ≈ 0.76); and static classes lag changes in surface wetness after rain. Near-real-time indicators are the next step.</p>
+  </div>
+</section>
+
+<!-- ======================= CLOSING ======================= -->
+<section class="sec gut">
+  <div class="wide stack" style="gap:2rem">
+    <div class="col stack" style="margin-inline:0">
+      <span class="kicker">Summary</span>
+      <h2>An adequate network, with representative surroundings at every station</h2>
+    </div>
+    <div class="score">
+      <div class="card cov">
+        <span class="kicker" style="color:var(--teal)">Part 1 · Spatial adequacy</span>
+        <div class="grade">Near-optimal for daily ETrs</div>
+        <ul>
+          <li><b>82% of cropland</b> is adequately or comfortably served for daily ETrs; <b>96%</b> is underserved for seasonal totals.</li>
+          <li>The real network is within <b>1.8–2.6%</b> of an optimal design.</li>
+          <li>2024 additions ranked at a median <b>93rd percentile</b> in a blind test.</li>
+          <li>Astoria is the most critical station; the Idaho Falls cluster the most redundant.</li>
+        </ul>
+      </div>
+      <div class="card tru">
+        <span class="kicker" style="color:var(--rust)">Part 2 · Station surroundings</span>
+        <div class="grade">Widespread departure from reference conditions</div>
+        <ul>
+          <li>Median station: MDD above 2&nbsp;°C on <b>42%</b> of growing-season days; mean RHmax <b>84.6%</b>.</li>
+          <li>Mean NDVI at 300 m is <b>0.33</b>; no station reaches 0.6.</li>
+          <li>Neighboring stations differ by up to <b>75 percentage points</b>, a local surface effect.</li>
+          <li>Diagnostics can be reported with ETref using existing data.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lede" style="max-width:54rem">Both assessments rely only on station records and public terrain, climate and satellite data, so they can be applied to other reference ET networks.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="inner gut wide">
+    <div>
+      <h3>About this work</h3>
+      <p>Two University of Idaho studies of the AgriMet network: spatial representativeness of reference ET estimation across Oregon, Idaho and Washington, and a diagnostic framework for station aridity across eight western states. Station data: U.S. Bureau of Reclamation AgriMet and cooperating networks. Satellite data: ESA Sentinel-2, Google Dynamic World.</p>
+      <p style="margin-top:.8rem">Other sources cited: ASCE-EWRI (2005); Allen et al. (1998), FAO-56; Allen, Pruitt &amp; Jensen (1983); Allen (1996, 2006, 2008); Temesgen et al. (1999); Allen et al. (2021); Singh et al. (2023).</p>
+    </div>
+    <div>
+      <h3>Photo and image credits</h3>
+      <ul>
+        <li>Hero: NASA Earth Observatory image by Lauren Dauphin, using Landsat data from the U.S. Geological Survey. <a href="https://science.nasa.gov/earth/earth-observatory/idahos-potato-belt-150646/">Idaho's Potato Belt</a>.</li>
+        <li>American Falls Reservoir: NASA astronaut photograph ISS069-E-20298, ISS Crew Earth Observations Facility and the Earth Science and Remote Sensing Unit, Johnson Space Center. <a href="https://science.nasa.gov/earth/earth-observatory/idahos-fields-and-flows-151951/">Idaho's Fields and Flows</a>.</li>
+        <li>Center pivot, Idaho: Mark Olson, USDA NRCS, public domain, via <a href="https://commons.wikimedia.org/wiki/File:NRCSID00002_-_Idaho_(3995)(NRCS_Photo_Gallery).jpg">Wikimedia Commons</a>.</li>
+        <li>Morrow County, Oregon: Sam Beebe/Ecotrust, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Wind_mills_and_irrigators_-_panoramio.jpg">Wikimedia Commons</a>. Cropped.</li>
+        <li>Station photos (Astoria, Tillamook, Grand Coulee Dam): U.S. Bureau of Reclamation, <a href="https://www.usbr.gov/pn/agrimet/">AgriMet</a> station pages.</li>
+        <li>Aerial views: USGS The National Map, orthoimagery, public domain. Rings and labels added.</li>
+        <li>Maps, charts and manuscript figures: study team.</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script>
+const DATA = {"map":{"w":1000.0,"h":869.2,"states":[{"st":"CA","d":"M-4.3,601.0L26.4,562.5L27.4,549.8L40.6,527.7L42.4,504.8L38.5,496.4L45.4,480.6L293.0,550.7L230.6,791.8L381.4,1017.7L72.1,1017.7L72.4,1010.5L64.4,991.4L54.2,976.7L55.2,952.8L59.3,949.5L62.8,952.5L67.3,947.6L71.7,937.4L69.9,926.8L67.9,923.0L55.1,920.6L42.0,896.9L45.5,881.6L42.1,868.0L48.2,848.1L56.0,847.4L53.5,865.1L63.5,875.6L67.6,874.6L67.6,862.5L60.1,848.2L62.5,847.1L62.3,840.2L57.8,834.9L70.0,830.1L68.8,825.1L64.0,820.4L57.2,821.5L54.9,827.4L57.0,831.1L53.2,836.5L55.8,843.2L51.2,844.2L39.1,834.9L32.4,822.3L22.5,820.5L30.1,807.8L29.8,797.2L26.8,796.2L24.0,780.1L15.9,769.9L1.0,735.2L0.6,731.5L4.8,727.0L4.7,697.5L12.9,683.2L14.4,659.4L5.9,640.4L6.2,635.5L-5.9,615.9L-4.3,601.0Z","lx":137.6,"ly":674.9},{"st":"OR","d":"M53.1,400.2L66.3,373.9L82.0,356.6L95.3,330.0L121.0,261.1L138.8,224.9L150.4,191.5L153.0,171.8L158.9,165.3L159.6,157.0L156.4,151.2L159.7,149.0L163.1,154.8L172.4,154.7L174.0,157.3L189.0,154.9L192.1,166.3L207.1,167.4L216.4,178.8L218.6,190.0L215.5,216.3L236.0,230.4L249.6,231.2L268.5,226.0L294.9,233.4L301.0,237.9L301.3,243.6L307.8,241.8L318.2,245.0L335.0,240.7L346.9,247.8L358.3,248.5L374.0,244.2L391.3,245.9L396.4,241.8L423.2,247.4L432.3,244.0L548.3,271.7L552.8,285.8L565.1,297.4L567.1,307.9L535.2,350.3L531.0,362.9L525.7,368.8L517.1,371.9L500.6,396.7L502.4,402.4L500.2,405.3L513.4,412.8L516.3,420.3L510.3,424.8L511.6,429.9L502.9,445.4L469.6,592.9L252.0,540.1L45.4,480.6L41.1,473.3L40.0,457.1L49.8,424.7L46.1,416.9L46.2,407.7L53.1,400.2Z","lx":294.9,"ly":370.8},{"st":"ID","d":"M500.2,405.3L503.2,389.8L517.1,371.9L525.7,368.8L531.0,362.9L535.2,350.3L567.1,307.9L562.6,293.2L552.8,285.8L549.9,279.5L546.2,263.6L551.0,257.5L546.6,241.0L595.9,29.9L648.7,41.4L631.6,121.3L639.2,143.0L644.2,149.4L641.8,162.6L645.5,167.7L640.3,171.9L651.3,185.4L658.7,189.4L681.4,237.3L688.8,241.0L688.3,245.4L704.9,249.7L701.0,260.5L698.0,260.7L690.4,286.5L686.4,286.2L689.0,310.7L677.5,317.0L679.9,322.4L676.1,331.3L677.2,335.5L688.9,344.4L691.3,340.1L702.0,336.6L709.8,330.0L717.7,339.8L717.5,363.0L723.7,380.7L729.7,387.6L726.1,399.4L728.1,405.5L734.4,410.3L737.9,409.0L743.7,414.9L746.6,440.1L752.5,448.8L764.4,440.6L782.2,448.4L785.0,442.1L789.8,439.6L798.6,444.5L813.8,444.1L816.7,449.0L823.4,446.0L831.6,447.8L844.5,433.2L856.3,457.0L860.3,459.2L828.2,661.7L661.2,633.6L469.6,592.9L502.9,445.4L511.6,429.9L510.3,424.8L516.3,420.3L513.4,412.8L500.2,405.3Z","lx":628.9,"ly":345.4},{"st":"MT","d":"M648.7,41.4L907.0,90.2L1148.5,123.4L1148.5,454.3L867.5,416.3L860.3,459.2L856.3,457.0L844.5,433.2L831.6,447.8L823.4,446.0L816.7,449.0L813.8,444.1L798.6,444.5L789.8,439.6L785.0,442.1L782.2,448.4L764.4,440.6L752.5,448.8L746.6,440.1L743.7,414.9L737.9,409.0L734.4,410.3L728.1,405.5L726.1,399.4L729.7,387.6L723.7,380.7L717.5,363.0L717.7,339.8L707.2,329.9L706.6,333.3L691.3,340.1L688.9,344.4L677.2,335.5L676.1,331.3L679.9,322.4L677.5,317.0L689.0,310.7L689.5,304.1L686.2,297.7L688.4,292.5L685.4,289.6L686.4,286.2L690.4,286.5L698.0,260.7L701.0,260.5L704.9,249.7L688.3,245.4L688.8,241.0L681.4,237.3L658.7,189.4L651.3,185.4L640.3,171.9L645.5,167.7L641.8,162.6L644.2,149.4L639.2,143.0L631.6,121.3L648.7,41.4Z","lx":852.0,"ly":252.4},{"st":"WA","d":"M267.5,-29.8L276.6,-34.8L281.9,-29.4L284.0,-21.8L279.8,-18.2L275.5,-4.4L271.5,-4.7L259.3,-15.7L258.3,-31.1L267.5,-29.8ZM176.3,-31.0L203.2,-4.5L241.0,12.3L251.5,10.1L257.1,19.0L271.3,18.7L273.7,22.8L270.6,33.0L272.2,37.9L279.7,33.6L277.0,29.9L278.6,19.1L274.4,9.6L282.6,-1.3L287.7,-14.5L288.6,-35.4L286.2,-44.9L291.0,-48.7L437.1,-8.5L595.9,29.9L546.6,241.0L551.0,257.5L546.2,263.6L548.3,271.7L432.3,244.0L423.2,247.4L396.4,241.8L391.3,245.9L374.0,244.2L358.3,248.5L341.3,246.3L335.0,240.7L318.2,245.0L307.8,241.8L301.3,243.6L301.0,237.9L284.5,228.7L265.1,226.2L255.8,230.2L239.7,231.8L220.0,220.5L214.3,212.8L218.6,190.0L216.4,178.8L207.1,167.4L192.1,166.3L189.0,154.9L178.5,151.9L177.7,148.4L166.5,150.6L162.6,145.0L155.9,145.1L165.3,116.6L171.3,118.0L174.2,115.8L167.1,108.2L166.3,91.6L171.4,73.2L171.9,62.3L169.1,55.5L172.2,27.7L164.9,2.0L166.9,-13.6L173.2,-23.9L172.3,-31.8L176.3,-31.0Z","lx":365.8,"ly":135.6},{"st":"WY","d":"M867.5,416.3L1148.5,454.3L1148.5,787.5L986.5,768.6L815.0,744.0L867.5,416.3Z","lx":919.7,"ly":592.7},{"st":"NV","d":"M230.6,791.8L293.0,550.7L493.4,598.4L647.9,630.6L572.8,1017.7L381.4,1017.7L230.6,791.8Z","lx":443.1,"ly":706.4},{"st":"UT","d":"M572.8,1017.7L647.9,630.6L828.2,661.7L815.0,744.0L937.4,762.0L902.5,1017.7L572.8,1017.7Z","lx":741.7,"ly":750.9}],"stations":[{"id":"abei","n":"Aberdeen, ID","x":734.9,"y":565.8,"dry":42.0,"rh":88.0,"lc":"Buildings & pavement","yrs":"1991\u20132024"},{"id":"acki","n":"Blackfoot, ID","x":767.5,"y":551.6,"dry":74.7,"rh":83.2,"lc":"Buildings & pavement","yrs":"2014\u20132024"},{"id":"afty","n":"Afton, WY","x":844.0,"y":602.7,"dry":32.8,"rh":88.6,"lc":"Cropland","yrs":"1980\u20132024"},{"id":"agko","n":"Agency Lake Ranch, OR","x":188.9,"y":473.7,"dry":21.3,"rh":90.1,"lc":"Open water","yrs":"2000\u20132024"},{"id":"ahti","n":"Ashton, ID","x":831.0,"y":492.0,"dry":36.0,"rh":86.4,"lc":"Cropland","yrs":"1987\u20132024"},{"id":"amto","n":"Amity, OR","x":174.4,"y":252.3,"dry":4.4,"rh":94.0,"lc":"Cropland","yrs":"2024"},{"id":"anvn","n":"Antelope Valley, NV","x":426.1,"y":745.5,"dry":60.5,"rh":79.2,"lc":"Cropland","yrs":"2011\u20132024"},{"id":"arao","n":"Aurora, OR","x":206.5,"y":244.8,"dry":21.4,"rh":93.0,"lc":"Buildings & pavement","yrs":"1998\u20132024"},{"id":"asho","n":"Ashland, OR","x":138.4,"y":489.3,"dry":50.8,"rh":80.3,"lc":"Buildings & pavement","yrs":"2024"},{"id":"asto","n":"Astoria, OR","x":164.9,"y":159.5,"dry":1.1,"rh":97.5,"lc":"Buildings & pavement","yrs":"2024"},{"id":"bano","n":"Bandon, OR","x":60.2,"y":390.3,"dry":1.4,"rh":97.2,"lc":"Buildings & pavement","yrs":"1985\u20132024"},{"id":"bato","n":"Beatty, OR","x":228.2,"y":492.0,"dry":5.4,"rh":94.2,"lc":"Grass & pasture","yrs":"2004\u20132024"},{"id":"bewo","n":"Bend, OR","x":259.8,"y":365.8,"dry":68.2,"rh":82.2,"lc":"Buildings & pavement","yrs":"2003\u20132024"},{"id":"bfam","n":"Blackfeet-Seville Colony, MT","x":830.9,"y":104.0,"dry":46.8,"rh":86.9,"lc":"Cropland","yrs":"1999\u20132024"},{"id":"bfgi","n":"Boise Fairgrounds, ID","x":543.5,"y":468.8,"dry":74.3,"rh":83.7,"lc":"Buildings & pavement","yrs":"2013\u20132024"},{"id":"bkvo","n":"Baker Valley, OR","x":468.5,"y":347.5,"dry":16.2,"rh":91.8,"lc":"Cropland","yrs":"2001\u20132024"},{"id":"blbu","n":"Bluebell, UT","x":858.6,"y":803.3,"dry":64.7,"rh":75.4,"lc":"Grass & pasture","yrs":"2016\u20132024"},{"id":"blcu","n":"Blue Creek, UT","x":740.6,"y":650.5,"dry":81.9,"rh":62.8,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"blou","n":"BearLake, UT","x":804.7,"y":663.6,"dry":74.7,"rh":75.1,"lc":"Sagebrush & shrubs","yrs":"2014\u20132024"},{"id":"bndw","n":"Bonneville Dam, WA","x":260.5,"y":228.8,"dry":40.6,"rh":89.0,"lc":"Open water","yrs":"2002\u20132024"},{"id":"boii","n":"Boise, ID","x":548.2,"y":474.3,"dry":61.1,"rh":89.3,"lc":"Buildings & pavement","yrs":"1995\u20132024"},{"id":"bozm","n":"Bozeman, MT","x":869.9,"y":360.5,"dry":63.9,"rh":81.5,"lc":"Cropland","yrs":"1989\u20132024"},{"id":"brdo","n":"Boardman, OR","x":374.9,"y":250.7,"dry":48.6,"rh":82.2,"lc":"Cropland","yrs":"2024"},{"id":"brgo","n":"Boring, OR","x":234.4,"y":238.1,"dry":15.3,"rh":93.6,"lc":"Cropland","yrs":"2024"},{"id":"brko","n":"Brookings, OR","x":44.5,"y":477.6,"dry":8.4,"rh":95.4,"lc":"Cropland","yrs":"1999\u20132024"},{"id":"cato","n":"Catlow Valley (Roaring Springs Ranch), OR","x":359.1,"y":510.2,"dry":50.3,"rh":77.6,"lc":"Cropland","yrs":"2023\u20132024"},{"id":"cbro","n":"Coburg, OR","x":162.9,"y":329.4,"dry":7.3,"rh":93.8,"lc":"Cropland","yrs":"2024"},{"id":"cdai","n":"Coeur d'Alene Fairgrounds, ID","x":586.5,"y":135.1,"dry":66.9,"rh":81.6,"lc":"Buildings & pavement","yrs":"2014\u20132024"},{"id":"cedc","n":"Cedarville, CA","x":274.2,"y":581.0,"dry":76.7,"rh":70.8,"lc":"Cropland","yrs":"1985\u20132024"},{"id":"chaw","n":"Chamokane, WA","x":540.0,"y":98.3,"dry":13.2,"rh":93.3,"lc":"Cropland","yrs":"2007\u20132024"},{"id":"chvo","n":"Christmas Valley, OR","x":276.6,"y":439.2,"dry":19.3,"rh":91.1,"lc":"Cropland","yrs":"1985\u20132024"},{"id":"cjdw","n":"Chief Joseph Dam, WA","x":436.3,"y":76.4,"dry":84.7,"rh":71.3,"lc":"Open water","yrs":"2002\u20132024"},{"id":"ckvy","n":"Cokeville, ID","x":834.6,"y":656.3,"dry":11.4,"rh":92.3,"lc":"Cropland","yrs":"2015\u20132024"},{"id":"cndo","n":"Condon, OR","x":349.9,"y":288.8,"dry":65.9,"rh":73.8,"lc":"Cropland","yrs":"2024"},{"id":"comt","n":"Conrad, MT","x":864.5,"y":151.4,"dry":46.6,"rh":85.7,"lc":"Cropland","yrs":"2015\u20132024"},{"id":"covm","n":"Corvallis, MT","x":713.2,"y":278.0,"dry":31.9,"rh":87.7,"lc":"Cropland","yrs":"1984\u20132024"},{"id":"crnu","n":"Corinne, UT","x":753.5,"y":689.9,"dry":63.7,"rh":78.8,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"crsm","n":"Creston, MT","x":738.7,"y":127.6,"dry":17.9,"rh":92.5,"lc":"Cropland","yrs":"1988\u20132024"},{"id":"crvo","n":"Corvallis, OR","x":166.8,"y":289.0,"dry":9.2,"rh":94.0,"lc":"Cropland","yrs":"1990\u20132024"},{"id":"cvjo","n":"Cave Junction, OR","x":83.4,"y":477.5,"dry":33.9,"rh":86.7,"lc":"Buildings & pavement","yrs":"2024"},{"id":"defo","n":"Dee Flat, OR","x":275.4,"y":238.2,"dry":24.4,"rh":90.3,"lc":"Cropland","yrs":"1988\u20132024"},{"id":"deni","n":"Dworshak - Dent Acres, ID","x":598.3,"y":229.8,"dry":49.7,"rh":84.7,"lc":"Open water","yrs":"2002\u20132024"},{"id":"dlnm","n":"Dillon, MT","x":787.8,"y":375.0,"dry":32.9,"rh":91.2,"lc":"Cropland","yrs":"1997\u20132024"},{"id":"drfu","n":"Drainage Farm, UT","x":774.7,"y":673.0,"dry":16.3,"rh":91.2,"lc":"Sagebrush & shrubs","yrs":"2014\u20132024"},{"id":"drlm","n":"Deer Lodge, MT","x":787.5,"y":291.1,"dry":26.8,"rh":91.4,"lc":"Cropland","yrs":"1998\u20132024"},{"id":"drpw","n":"Deer Park, WA","x":555.2,"y":108.2,"dry":45.8,"rh":84.9,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"dtro","n":"Detroit Lake, OR","x":226.1,"y":297.8,"dry":25.9,"rh":90.5,"lc":"Trees","yrs":"2002\u20132024"},{"id":"ducu","n":"Duchesne, UT","x":846.8,"y":817.7,"dry":78.4,"rh":71.0,"lc":"Cropland","yrs":"2012\u20132024"},{"id":"dwni","n":"Downey, ID","x":769.0,"y":615.5,"dry":41.4,"rh":82.7,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"dyto","n":"Dayton, OR","x":185.4,"y":245.0,"dry":5.0,"rh":94.7,"lc":"Cropland","yrs":"2024"},{"id":"ebri","n":"Material Fuels Complex, ID","x":754.5,"y":515.3,"dry":74.3,"rh":74.7,"lc":"Bare ground","yrs":"2014\u20132024"},{"id":"echo","n":"Echo, OR","x":408.6,"y":262.0,"dry":57.4,"rh":82.7,"lc":"Cropland","yrs":"1988\u20132024"},{"id":"efhw","n":"Entiat Fish Hatchery, WA","x":393.0,"y":90.0,"dry":81.3,"rh":79.0,"lc":"Cropland","yrs":"2013\u20132024"},{"id":"egpo","n":"Eagle Point, OR","x":142.1,"y":466.9,"dry":24.6,"rh":86.5,"lc":"Cropland","yrs":"2024"},{"id":"eoro","n":"EOARC Burns, OR","x":381.0,"y":442.4,"dry":33.5,"rh":85.2,"lc":"Cropland","yrs":"2019\u20132024"},{"id":"evfu","n":"Evan's Farm, UT","x":776.6,"y":679.0,"dry":47.8,"rh":82.6,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"evty","n":"Evanston, WY","x":818.7,"y":727.8,"dry":27.4,"rh":85.8,"lc":"Cropland","yrs":"2015\u20132024"},{"id":"fafi","n":"Fairfield, ID","x":622.7,"y":514.1,"dry":38.5,"rh":84.9,"lc":"Cropland","yrs":"1987\u20132024"},{"id":"fldo","n":"Fields, OR","x":382.7,"y":558.6,"dry":69.9,"rh":72.4,"lc":"Cropland","yrs":"2024"},{"id":"fogo","n":"Forest Grove, OR","x":194.2,"y":217.9,"dry":17.3,"rh":92.1,"lc":"Cropland","yrs":"1991\u20132024"},{"id":"fslo","n":"Fossil, OR","x":342.1,"y":305.3,"dry":47.5,"rh":81.1,"lc":"Cropland","yrs":"2024"},{"id":"fthi","n":"Fort Hall, ID","x":760.0,"y":560.1,"dry":35.9,"rh":89.1,"lc":"Cropland","yrs":"1993\u20132024"},{"id":"ftmo","n":"Fifteen Mile Creek near Dufur, OR","x":300.6,"y":256.8,"dry":12.5,"rh":89.9,"lc":"Cropland","yrs":"2022\u20132024"},{"id":"gcdw","n":"Grand Coulee Dam, WA","x":472.4,"y":89.3,"dry":91.0,"rh":72.6,"lc":"Open water","yrs":"2002\u20132024"},{"id":"gdvi","n":"Grand View, ID","x":543.3,"y":531.5,"dry":53.4,"rh":81.7,"lc":"Cropland","yrs":"1993\u20132024"},{"id":"gerw","n":"George, WA","x":416.9,"y":151.6,"dry":39.9,"rh":88.2,"lc":"Cropland","yrs":"1986\u20132024"},{"id":"gfmt","n":"Greenfields-Fairfield, MT","x":859.0,"y":193.2,"dry":39.9,"rh":88.8,"lc":"Cropland","yrs":"1995\u20132024"},{"id":"gfrinew","n":"Glenns Ferry, ID","x":583.6,"y":545.2,"dry":73.0,"rh":75.1,"lc":"Cropland","yrs":"2012\u20132024"},{"id":"gfriold","n":"Glenns Ferry, ID","x":584.1,"y":542.1,"dry":71.6,"rh":76.4,"lc":"Cropland","yrs":"1993\u20132012"},{"id":"gidm","n":"Greenfield Irrigation District (West Side), MT","x":834.7,"y":196.4,"dry":68.2,"rh":75.8,"lc":"Cropland","yrs":"2017\u20132024"},{"id":"golw","n":"Goldendale, WA","x":325.9,"y":232.6,"dry":46.9,"rh":84.0,"lc":"Buildings & pavement","yrs":"1991\u20132024"},{"id":"gpso","n":"Grants Pass, OR","x":99.6,"y":460.3,"dry":6.6,"rh":93.5,"lc":"Cropland","yrs":"2024"},{"id":"grei","n":"Grace, ID","x":793.6,"y":612.8,"dry":55.5,"rh":81.2,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"grtu","n":"Grantsville, UT","x":703.6,"y":764.8,"dry":63.8,"rh":75.9,"lc":"Cropland","yrs":"2015\u20132024"},{"id":"hami","n":"Hamer, ID","x":784.6,"y":485.8,"dry":63.1,"rh":82.2,"lc":"Grass & pasture","yrs":"2014\u20132024"},{"id":"haro","n":"Harper, OR","x":470.6,"y":433.8,"dry":50.0,"rh":82.1,"lc":"Sagebrush & shrubs","yrs":"2023\u20132024"},{"id":"hero","n":"Hermiston, OR","x":399.1,"y":250.7,"dry":60.1,"rh":80.8,"lc":"Cropland","yrs":"1983\u20132024"},{"id":"hmpo","n":"Hampton, OR","x":310.1,"y":409.2,"dry":19.4,"rh":87.6,"lc":"Cropland","yrs":"2024"},{"id":"hoxo","n":"Hood River, OR","x":284.4,"y":232.3,"dry":40.3,"rh":87.4,"lc":"Cropland","yrs":"1987\u20132024"},{"id":"hrfo","n":"Hereford, OR","x":457.3,"y":378.4,"dry":17.3,"rh":90.4,"lc":"Grass & pasture","yrs":"1998\u20132024"},{"id":"hrhw","n":"Harrah, WA","x":351.9,"y":190.8,"dry":52.4,"rh":83.4,"lc":"Cropland","yrs":"1987\u20132024"},{"id":"hrmo","n":"Hermiston R & E Center, OR","x":412.0,"y":254.4,"dry":73.4,"rh":76.8,"lc":"Cropland","yrs":"1993\u20132024"},{"id":"htsm","n":"Hot Springs, MT","x":702.4,"y":168.1,"dry":29.7,"rh":89.5,"lc":"Trees","yrs":"2019\u20132024"},{"id":"huan","n":"Hualapai Flat, NV","x":310.3,"y":648.9,"dry":80.0,"rh":60.9,"lc":"Cropland","yrs":"2012\u20132024"},{"id":"hvmt","n":"Helena Valley, MT","x":836.1,"y":271.2,"dry":23.8,"rh":92.1,"lc":"Cropland","yrs":"1995\u20132024"},{"id":"ichi","n":"Richfield, ID","x":659.1,"y":542.6,"dry":61.6,"rh":81.3,"lc":"Grass & pasture","yrs":"2014\u20132024"},{"id":"ifai","n":"Idaho Falls, ID","x":788.7,"y":528.8,"dry":76.9,"rh":81.6,"lc":"Buildings & pavement","yrs":"2014\u20132024"},{"id":"igri","n":"INTEC/Grid 3, ID","x":737.5,"y":512.6,"dry":72.8,"rh":73.8,"lc":"Bare ground","yrs":"2014\u20132024"},{"id":"imbo","n":"Imbler, OR","x":478.4,"y":303.3,"dry":27.6,"rh":88.8,"lc":"Cropland","yrs":"1994\u20132024"},{"id":"iyci","n":"Idaho Youth Challenge Academy, ID","x":619.8,"y":244.9,"dry":3.0,"rh":96.0,"lc":"Trees","yrs":"2019\u20132024"},{"id":"jckm","n":"Jocko Valley, MT","x":726.8,"y":210.9,"dry":34.0,"rh":88.3,"lc":"Grass & pasture","yrs":"2019\u20132024"},{"id":"jnvo","n":"Jordan Valley, OR","x":481.8,"y":512.8,"dry":16.5,"rh":88.0,"lc":"Sagebrush & shrubs","yrs":"2023\u20132024"},{"id":"jvwm","n":"Jefferson River Valley-Whitehall, MT","x":813.9,"y":340.7,"dry":44.0,"rh":87.4,"lc":"Grass & pasture","yrs":"2001\u20132024"},{"id":"kflo","n":"Klamath Falls, OR","x":193.2,"y":509.5,"dry":35.4,"rh":89.8,"lc":"Cropland","yrs":"1999\u20132024"},{"id":"kflw","n":"Kettle Falls, WA","x":529.8,"y":48.5,"dry":38.3,"rh":87.6,"lc":"Open water","yrs":"2002\u20132024"},{"id":"ktbi","n":"Kettle Butte, ID","x":773.0,"y":522.5,"dry":72.7,"rh":77.1,"lc":"Cropland","yrs":"1995\u20132024"},{"id":"lako","n":"Lakeview, OR","x":264.7,"y":532.4,"dry":45.8,"rh":83.4,"lc":"Cropland","yrs":"1988\u20132024"},{"id":"laku","n":"Laketown, UT","x":808.7,"y":672.3,"dry":26.0,"rh":83.6,"lc":"Grass & pasture","yrs":"2014\u20132024"},{"id":"lbno","n":"Lebanon, OR","x":181.9,"y":299.5,"dry":3.8,"rh":95.5,"lc":"Cropland","yrs":"2024"},{"id":"lbrw","n":"Lake Bryan - Rice Bar, WA","x":520.0,"y":205.9,"dry":70.8,"rh":77.5,"lc":"Open water","yrs":"2002\u20132024"},{"id":"legw","n":"Legrow, WA","x":439.3,"y":228.3,"dry":48.9,"rh":87.6,"lc":"Cropland","yrs":"1986\u20132024"},{"id":"lewu","n":"Lewiston, UT","x":777.9,"y":657.6,"dry":11.3,"rh":93.2,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"lggu","n":"Logan Golf, UT","x":779.8,"y":675.3,"dry":86.6,"rh":65.8,"lc":"Buildings & pavement","yrs":"2019\u20132024"},{"id":"libwnew","n":"Liberty Lake, WA","x":567.9,"y":134.5,"dry":69.0,"rh":81.8,"lc":"Buildings & pavement","yrs":"2016\u20132024"},{"id":"libwold","n":"Liberty Lake, WA","x":568.9,"y":135.6,"dry":57.6,"rh":90.7,"lc":"Buildings & pavement","yrs":"2014\u20132016"},{"id":"lidw","n":"Lind, WA","x":463.1,"y":178.1,"dry":66.7,"rh":77.0,"lc":"Cropland","yrs":"1983\u20132024"},{"id":"lkgo","n":"Lookingglass, OR","x":116.0,"y":400.7,"dry":0.6,"rh":95.9,"lc":"Grass & pasture","yrs":"2024"},{"id":"lofi","n":"Specific Manufacturing Capability, ID","x":753.8,"y":492.8,"dry":82.5,"rh":70.7,"lc":"Bare ground","yrs":"2014\u20132024"},{"id":"loro","n":"Lorella, OR","x":222.4,"y":524.8,"dry":10.9,"rh":94.9,"lc":"Grass & pasture","yrs":"2001\u20132024"},{"id":"mali","n":"Malta, ID","x":692.3,"y":601.5,"dry":42.7,"rh":87.0,"lc":"Cropland","yrs":"1983\u20132024"},{"id":"masw","n":"Manson, WA","x":408.4,"y":75.5,"dry":66.5,"rh":78.7,"lc":"Cropland","yrs":"1993\u20132024"},{"id":"mdeo","n":"Moody Farms East Satellite, OR","x":291.7,"y":303.3,"dry":90.0,"rh":67.5,"lc":"Bare ground","yrs":"2013\u20132024"},{"id":"mdfo","n":"Medford, OR","x":127.7,"y":476.4,"dry":36.0,"rh":88.7,"lc":"Cropland","yrs":"1989\u20132024"},{"id":"mdki","n":"Minidoka, ID","x":687.4,"y":569.7,"dry":48.7,"rh":86.3,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"mdno","n":"Moody Farms North Satellite, OR","x":292.1,"y":303.7,"dry":87.7,"rh":67.3,"lc":"Sagebrush & shrubs","yrs":"2013\u20132024"},{"id":"mdso","n":"Moody Farms South Satellite, OR","x":292.0,"y":304.5,"dry":76.1,"rh":75.4,"lc":"Cropland","yrs":"2013\u20132024"},{"id":"mdto","n":"Moody Farms West Satellite, OR","x":291.3,"y":304.0,"dry":81.3,"rh":71.7,"lc":"Cropland","yrs":"2013\u20132024"},{"id":"mdxo","n":"Moody Farms Control Station, OR","x":291.9,"y":304.1,"dry":77.4,"rh":73.1,"lc":"Cropland","yrs":"2013\u20132024"},{"id":"mfro","n":"Milton-Freewater, OR","x":466.9,"y":256.9,"dry":83.4,"rh":68.8,"lc":"Cropland","yrs":"2022\u20132024"},{"id":"mnpi","n":"Montpelier, ID","x":814.0,"y":638.1,"dry":7.5,"rh":92.9,"lc":"Grass & pasture","yrs":"2014\u20132024"},{"id":"mnti","n":"Monteview, ID","x":767.4,"y":482.2,"dry":27.1,"rh":90.1,"lc":"Cropland","yrs":"1995\u20132024"},{"id":"moim","n":"Moiese Valley, MT","x":715.9,"y":188.6,"dry":28.2,"rh":93.5,"lc":"Cropland","yrs":"2019\u20132024"},{"id":"mrei","n":"Moore, ID","x":715.1,"y":493.4,"dry":58.3,"rh":79.1,"lc":"Cropland","yrs":"2019\u20132024"},{"id":"mrso","n":"Madras, OR","x":283.2,"y":317.9,"dry":47.5,"rh":82.1,"lc":"Cropland","yrs":"1984\u20132024"},{"id":"muru","n":"Murray, UT","x":756.5,"y":765.3,"dry":87.7,"rh":73.8,"lc":"Buildings & pavement","yrs":"2014\u20132024"},{"id":"mwsm","n":"Moccasin, MT","x":955.5,"y":258.3,"dry":55.1,"rh":82.5,"lc":"Cropland","yrs":"2001\u20132024"},{"id":"mwso","n":"Middle Warm Springs, OR","x":287.1,"y":304.1,"dry":62.5,"rh":78.6,"lc":"Cropland","yrs":"2013\u20132024"},{"id":"nmpi","n":"Nampa, ID","x":518.0,"y":481.6,"dry":66.7,"rh":82.2,"lc":"Cropland","yrs":"1996\u20132024"},{"id":"nopo","n":"North Powder, OR","x":472.0,"y":338.2,"dry":28.7,"rh":86.8,"lc":"Trees","yrs":"2022\u20132024"},{"id":"odsw","n":"Odessa, WA","x":464.0,"y":140.9,"dry":63.1,"rh":77.3,"lc":"Sagebrush & shrubs","yrs":"1984\u20132024"},{"id":"omaw","n":"Omak, WA","x":447.8,"y":44.5,"dry":59.8,"rh":82.7,"lc":"Cropland","yrs":"1989\u20132024"},{"id":"onto","n":"Ontario, OR","x":505.7,"y":432.8,"dry":79.3,"rh":74.3,"lc":"Cropland","yrs":"1992\u20132024"},{"id":"osgi","n":"Osgood, ID","x":787.3,"y":521.9,"dry":18.1,"rh":93.6,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"owei","n":"Howe, ID","x":738.2,"y":496.4,"dry":74.5,"rh":79.4,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"owno","n":"Owen's Hay Crane, OR","x":402.5,"y":456.6,"dry":42.8,"rh":86.1,"lc":"Cropland","yrs":"2019\u20132024"},{"id":"paro","n":"Parkdale, OR","x":276.0,"y":242.0,"dry":14.6,"rh":92.9,"lc":"Cropland","yrs":"1988\u20132024"},{"id":"pcyo","n":"Prairie City, OR","x":422.0,"y":374.0,"dry":19.2,"rh":88.9,"lc":"Grass & pasture","yrs":"1989\u20132024"},{"id":"pelu","n":"Pelican Lake, UT","x":889.7,"y":824.7,"dry":82.8,"rh":77.0,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"pici","n":"Picabo, ID","x":661.2,"y":521.8,"dry":68.1,"rh":76.1,"lc":"Cropland","yrs":"1982\u20132024"},{"id":"plvu","n":"Pleasant Valley, UT","x":863.1,"y":821.4,"dry":81.2,"rh":69.5,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"pngo","n":"Pine Grove, OR","x":284.3,"y":234.4,"dry":9.9,"rh":95.6,"lc":"Cropland","yrs":"1988\u20132024"},{"id":"pobo","n":"Powell Butte, OR","x":285.3,"y":355.5,"dry":31.7,"rh":83.3,"lc":"Cropland","yrs":"1993\u20132024"},{"id":"prno","n":"Prineville, OR","x":289.7,"y":346.5,"dry":28.2,"rh":89.8,"lc":"Cropland","yrs":"2024"},{"id":"psfi","n":"Post Falls, ID","x":576.2,"y":133.2,"dry":61.1,"rh":82.6,"lc":"Buildings & pavement","yrs":"2014\u20132024"},{"id":"pslo","n":"Paisley, OR","x":279.1,"y":494.1,"dry":41.5,"rh":83.0,"lc":"Cropland","yrs":"2024"},{"id":"psti","n":"Preston, ID","x":778.6,"y":644.6,"dry":28.1,"rh":87.4,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"ptro","n":"Pilot Rock, OR","x":434.8,"y":284.1,"dry":87.2,"rh":66.7,"lc":"Cropland","yrs":"2024"},{"id":"pvan","n":"Paradise Valley, NV","x":416.6,"y":650.2,"dry":79.8,"rh":72.3,"lc":"Cropland","yrs":"2010\u20132024"},{"id":"pvto","n":"Provolt, OR","x":108.8,"y":472.3,"dry":12.1,"rh":91.5,"lc":"Cropland","yrs":"2024"},{"id":"rbym","n":"Ruby River Valley-Laurin, MT","x":808.5,"y":377.7,"dry":67.5,"rh":80.6,"lc":"Cropland","yrs":"1996\u20132024"},{"id":"rdbm","n":"Round Butte, MT","x":721.4,"y":178.4,"dry":32.4,"rh":90.8,"lc":"Cropland","yrs":"1989\u20132024"},{"id":"rgbi","n":"Rigby, ID","x":801.1,"y":516.4,"dry":56.5,"rh":83.2,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"rilo","n":"Riley, OR","x":356.5,"y":438.9,"dry":34.6,"rh":85.9,"lc":"Cropland","yrs":"2024"},{"id":"rnbm","n":"Round Butte, MT","x":721.9,"y":177.9,"dry":31.4,"rh":90.2,"lc":"Grass & pasture","yrs":"2019\u20132024"},{"id":"robi","n":"Roberts, ID","x":787.8,"y":508.5,"dry":34.0,"rh":88.0,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"rosonew","n":"Roseburg, OR","x":120.9,"y":385.2,"dry":1.6,"rh":95.6,"lc":"Cropland","yrs":"2024"},{"id":"rosoold","n":"Roseburg, OR","x":120.7,"y":393.0,"dry":14.7,"rh":93.1,"lc":"Grass & pasture","yrs":"2016\u20132024"},{"id":"rpti","n":"Rupert, ID","x":667.3,"y":583.4,"dry":35.8,"rh":89.3,"lc":"Cropland","yrs":"1988\u20132024"},{"id":"rrci","n":"Arco, ID","x":717.1,"y":505.9,"dry":66.8,"rh":82.6,"lc":"Buildings & pavement","yrs":"2014\u20132024"},{"id":"rrii","n":"Ririe, ID","x":810.7,"y":523.6,"dry":71.1,"rh":74.6,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"rthi","n":"Rathdrum Prairie, ID","x":585.2,"y":128.0,"dry":24.0,"rh":90.8,"lc":"Cropland","yrs":"2008\u20132024"},{"id":"rufo","n":"Rufus, OR","x":327.0,"y":244.7,"dry":70.1,"rh":76.0,"lc":"Cropland","yrs":"2024"},{"id":"rxgi","n":"Rexburg, ID","x":810.1,"y":503.4,"dry":25.5,"rh":91.2,"lc":"Cropland","yrs":"1987\u20132024"},{"id":"sacw","n":"Sacheen Lake, WA","x":565.7,"y":91.8,"dry":10.4,"rh":93.2,"lc":"Trees","yrs":"2016\u20132024"},{"id":"sbmw","n":"Seven Bays Marina, WA","x":504.0,"y":104.6,"dry":80.6,"rh":76.8,"lc":"Sagebrush & shrubs","yrs":"2002\u20132024"},{"id":"scpo","n":"Scappoose, OR","x":211.5,"y":205.7,"dry":3.8,"rh":95.3,"lc":"Cropland","yrs":"2024"},{"id":"shbm","n":"Spring Hill Near Browning, MT","x":810.1,"y":114.1,"dry":64.2,"rh":79.0,"lc":"Grass & pasture","yrs":"2017\u20132024"},{"id":"shli","n":"Shelley, ID","x":782.2,"y":533.5,"dry":35.2,"rh":88.7,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"sigm","n":"Saint Ignatius, MT","x":728.7,"y":197.5,"dry":42.2,"rh":85.8,"lc":"Cropland","yrs":"1991\u20132024"},{"id":"silw","n":"Silcott Island, WA","x":540.9,"y":234.2,"dry":81.7,"rh":76.2,"lc":"Open water","yrs":"2002\u20132024"},{"id":"slmi","n":"Salmon, ID","x":708.3,"y":365.1,"dry":13.1,"rh":92.7,"lc":"Cropland","yrs":"2019\u20132024"},{"id":"slwi","n":"Silverwood WWTP Athol, ID","x":592.9,"y":121.2,"dry":26.0,"rh":89.8,"lc":"Trees","yrs":"2014\u20132024"},{"id":"snco","n":"Seneca, OR","x":396.1,"y":392.6,"dry":3.3,"rh":94.2,"lc":"Grass & pasture","yrs":"2023\u20132024"},{"id":"snsu","n":"Snowville South, UT","x":725.1,"y":655.7,"dry":90.5,"rh":56.8,"lc":"Bare ground","yrs":"2014\u20132024"},{"id":"snwu","n":"Snowville (West), UT","x":715.6,"y":644.0,"dry":49.8,"rh":80.3,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"spfu","n":"Spanish Fork, UT","x":766.7,"y":814.6,"dry":82.4,"rh":69.2,"lc":"Cropland","yrs":"2013\u20132024"},{"id":"spli","n":"Spirit Lake, ID","x":585.9,"y":112.4,"dry":18.3,"rh":93.8,"lc":"Grass & pasture","yrs":"2014\u20132024"},{"id":"stvn","n":"Steptoe Valley North, NV","x":580.4,"y":779.2,"dry":26.0,"rh":83.8,"lc":"Cropland","yrs":"2011\u20132024"},{"id":"subo","n":"Sublimity, OR","x":197.6,"y":277.3,"dry":3.8,"rh":93.7,"lc":"Cropland","yrs":"2024"},{"id":"sugi","n":"Sugar City, ID","x":812.4,"y":499.8,"dry":44.7,"rh":88.0,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"svwm","n":"Shields Valley-Wilsall, MT","x":903.3,"y":334.6,"dry":41.2,"rh":86.8,"lc":"Cropland","yrs":"2001\u20132024"},{"id":"tabi","n":"Taber, ID","x":748.2,"y":537.3,"dry":44.1,"rh":83.4,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"teri","n":"Terreton, ID","x":771.8,"y":497.5,"dry":52.0,"rh":86.6,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"tfgi","n":"Twin Falls Fairgrounds, Filer Idaho, ID","x":623.6,"y":577.2,"dry":77.8,"rh":73.5,"lc":"Buildings & pavement","yrs":"2013\u20132024"},{"id":"tlkc","n":"Tulelake, CA","x":200.6,"y":537.3,"dry":18.5,"rh":90.7,"lc":"Cropland","yrs":"2016\u20132024"},{"id":"tlmo","n":"Tillamook, OR","x":153.9,"y":215.6,"dry":1.6,"rh":97.9,"lc":"Cropland","yrs":"2024"},{"id":"tmlo","n":"Tumalo, OR","x":257.7,"y":355.7,"dry":20.8,"rh":88.5,"lc":"Grass & pasture","yrs":"2023\u20132024"},{"id":"tosm","n":"Toston, MT","x":856.5,"y":320.8,"dry":41.3,"rh":90.4,"lc":"Cropland","yrs":"1992\u20132024"},{"id":"trfm","n":"Teton River-Farmington, MT","x":843.5,"y":170.4,"dry":31.2,"rh":89.3,"lc":"Cropland","yrs":"2001\u20132024"},{"id":"trmu","n":"Tremonton, UT","x":757.8,"y":673.9,"dry":70.8,"rh":74.3,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"trti","n":"Terraton, ID","x":781.2,"y":496.8,"dry":33.4,"rh":89.7,"lc":"Cropland","yrs":"2014\u20132024"},{"id":"twfi","n":"Twin Falls (Kimberly) Idaho 7E, ID","x":638.5,"y":582.1,"dry":59.4,"rh":81.5,"lc":"Cropland","yrs":"1990\u20132024"},{"id":"twko","n":"Twickenham, OR","x":339.8,"y":327.2,"dry":70.3,"rh":79.8,"lc":"Cropland","yrs":"2022\u20132024"},{"id":"ulmt","n":"Ulm, MT","x":872.9,"y":216.8,"dry":51.5,"rh":86.8,"lc":"Cropland","yrs":"2015\u20132024"},{"id":"umhm","n":"Upper Musselshell-Harlowton, MT","x":948.7,"y":308.1,"dry":42.4,"rh":87.5,"lc":"Cropland","yrs":"2001\u20132024"},{"id":"vlmt","n":"Valier, MT","x":845.1,"y":131.8,"dry":33.5,"rh":88.1,"lc":"Cropland","yrs":"2015\u20132024"},{"id":"vrnu","n":"Vernal, UT","x":899.6,"y":802.2,"dry":85.4,"rh":67.6,"lc":"Cropland","yrs":"2016\u20132024"},{"id":"wdho","n":"Woodhall Farms near Monroe, OR","x":147.6,"y":308.8,"dry":28.9,"rh":88.2,"lc":"Trees","yrs":"2020\u20132024"},{"id":"wrdo","n":"Worden, OR","x":187.8,"y":521.0,"dry":6.3,"rh":94.7,"lc":"Cropland","yrs":"2000\u20132024"},{"id":"wssm","n":"White Sulphur Springs, MT","x":893.1,"y":290.8,"dry":22.6,"rh":92.1,"lc":"Cropland","yrs":"2001\u20132024"},{"id":"wwco","n":"Wallowa County, OR","x":520.1,"y":316.2,"dry":11.2,"rh":90.0,"lc":"Grass & pasture","yrs":"2022\u20132024"}]},"landcover":[{"lc":"Trees","dry":21.8,"n":7},{"lc":"Grass & pasture","dry":27.3,"n":19},{"lc":"Cropland","dry":43.5,"n":135},{"lc":"Sagebrush & shrubs","dry":55.5,"n":7},{"lc":"Buildings & pavement","dry":56.3,"n":20},{"lc":"Open water","dry":59.8,"n":8},{"lc":"Bare ground","dry":82.0,"n":5}],"yearly":[{"y":2000,"dry":45.5,"n":62},{"y":2001,"dry":46.7,"n":70},{"y":2002,"dry":47.3,"n":79},{"y":2003,"dry":48.3,"n":80},{"y":2004,"dry":39.3,"n":81},{"y":2005,"dry":41.0,"n":81},{"y":2006,"dry":47.4,"n":81},{"y":2007,"dry":48.4,"n":82},{"y":2008,"dry":47.5,"n":83},{"y":2009,"dry":43.2,"n":83},{"y":2010,"dry":38.2,"n":84},{"y":2011,"dry":41.4,"n":86},{"y":2012,"dry":48.1,"n":89},{"y":2013,"dry":45.4,"n":98},{"y":2014,"dry":50.4,"n":140},{"y":2015,"dry":52.7,"n":146},{"y":2016,"dry":49.2,"n":152},{"y":2017,"dry":47.4,"n":153},{"y":2018,"dry":51.0,"n":153},{"y":2019,"dry":41.6,"n":163},{"y":2020,"dry":48.7,"n":164},{"y":2021,"dry":56.3,"n":164},{"y":2022,"dry":47.1,"n":169},{"y":2023,"dry":39.9,"n":174},{"y":2024,"dry":43.3,"n":200}],"growth":{"optimal":[[0,1.4253],[1,1.2141],[2,1.1973],[3,1.0993],[4,1.0741],[5,1.06],[6,1.0428],[7,1.0179],[8,1.0102],[9,1.0052],[10,0.9954],[11,0.97],[12,0.9611],[13,0.9537],[14,0.9518],[15,0.94],[16,0.9367],[17,0.9336],[18,0.9286],[19,0.9251],[20,0.9247],[21,0.9226],[22,0.9196],[23,0.9169],[24,0.9084],[25,0.9065],[26,0.9036],[27,0.9004],[28,0.8972],[29,0.8961],[30,0.8945],[31,0.8936],[32,0.8931],[33,0.8882],[34,0.8849],[35,0.883],[36,0.8826],[37,0.88],[38,0.8797],[39,0.8789],[40,0.878],[41,0.8722],[42,0.8709],[43,0.8683],[44,0.8675],[45,0.8666],[46,0.8663],[47,0.8655],[48,0.8648],[49,0.8624],[50,0.8596],[51,0.8593],[52,0.8564],[53,0.8557],[54,0.854],[55,0.8532],[56,0.8517],[57,0.8503],[58,0.8495],[59,0.8492],[60,0.8488],[61,0.8481],[62,0.846],[63,0.8424],[64,0.8417],[65,0.8407],[66,0.8399],[67,0.8391],[68,0.8384],[69,0.8377],[70,0.8377],[71,0.8371],[72,0.8357],[73,0.8353],[74,0.8345],[75,0.8339],[76,0.8336],[77,0.8324],[78,0.8319],[79,0.8316],[80,0.8311],[81,0.8295],[82,0.8292],[83,0.8288],[84,0.8285],[85,0.8282],[86,0.8278],[87,0.8271],[88,0.8267],[89,0.8263],[90,0.826],[91,0.8257],[92,0.8243],[93,0.8242],[94,0.8239],[95,0.8238],[96,0.823],[97,0.8227],[98,0.8222],[99,0.822],[100,0.8216],[101,0.8212],[102,0.8208],[103,0.8201],[104,0.8185],[105,0.8182],[106,0.8181],[107,0.8176],[108,0.8174],[109,0.8173],[110,0.8166],[111,0.8157],[112,0.8154],[113,0.8139],[114,0.8132],[115,0.813],[116,0.8121],[117,0.812],[118,0.8118],[119,0.8115],[120,0.8112],[121,0.8106],[122,0.8104],[123,0.8098],[124,0.8096],[125,0.8095],[126,0.8093],[127,0.8091],[128,0.8088],[129,0.8086],[130,0.8079],[131,0.8077],[132,0.8072],[133,0.8068],[134,0.8056],[135,0.8053],[136,0.8051],[137,0.8041],[138,0.804],[139,0.8033],[140,0.8031]],"real":[[1988,0,1.4253],[1989,20,0.9833],[1990,23,0.9606],[1991,25,0.9447],[1992,27,0.9401],[1993,33,0.9316],[1994,35,0.9244],[1995,36,0.9231],[1996,39,0.9207],[1998,42,0.9112],[1999,44,0.9021],[2000,46,0.9009],[2001,48,0.9],[2002,57,0.87],[2003,60,0.8688],[2004,61,0.8685],[2008,63,0.8647],[2012,64,0.8643],[2013,69,0.8602],[2014,91,0.8545],[2015,99,0.8525],[2016,102,0.8501],[2019,104,0.8482],[2020,107,0.846],[2022,112,0.843],[2024,140,0.8243]]},"picks2024":[{"n":"Prineville","p":75.5},{"n":"Rufus","p":79.3},{"n":"Tumalo","p":79.5},{"n":"Lebanon","p":84.3},{"n":"Boardman","p":84.8},{"n":"Boring","p":86.4},{"n":"Dayton","p":87.4},{"n":"Sublimity","p":88.6},{"n":"Lookingglass","p":88.7},{"n":"Pilot Rock","p":89.0},{"n":"Eagle Point","p":89.5},{"n":"Ashland","p":91.7},{"n":"Harper","p":92.0},{"n":"Amity","p":92.7},{"n":"Coburg","p":93.1},{"n":"Seneca","p":93.9},{"n":"Scappoose","p":94.2},{"n":"Provolt","p":94.3},{"n":"Riley","p":94.5},{"n":"Paisley","p":94.5},{"n":"Condon","p":94.5},{"n":"Grants Pass","p":95.1},{"n":"Cave Junction","p":96.1},{"n":"Jordan Valley","p":96.8},{"n":"Catlow Valley, OR AgriMet Weather Station","p":97.6},{"n":"Fields","p":98.1},{"n":"Tillamook","p":98.4},{"n":"Astoria","p":99.0}],"summary":{"n_stations":201,"median_dry":42.7}};
+const NS = "http://www.w3.org/2000/svg";
+const INK = "#22272B", INK2 = "#5A5F62", PAPER = "#FAF9F5", GRID = "rgba(34,39,43,.12)";
+const DRY = ["#EFE6CF","#E2C389","#D3984E","#B9622D","#87381B"];
+const dryColor = v => DRY[Math.min(4, Math.floor(v / 20))];
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function el(tag, attrs, parent, text){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (tag === "text" && attrs.fill) e.style.fill = attrs.fill;  // beat the stylesheet's default label color
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function svg(host, w, h, label){
+  const s = el("svg", {viewBox:`0 0 ${w} ${h}`, role:"img", "aria-label":label || ""});
+  host.appendChild(s); return s;
+}
+function caption(host, html){ const p = document.createElement("p"); p.className = "cap"; p.innerHTML = html; host.appendChild(p); return p; }
+function html(tag, cls, parent, inner){ const e = document.createElement(tag); if (cls) e.className = cls; if (inner != null) e.innerHTML = inner; if (parent) parent.appendChild(e); return e; }
+
+/* subscripts: ETref, ETrs, ETos, ETo, Tmin, Tmax, Tdew, RHmax, RHmin, Kc, Ko */
+const SUBRE = /\b(ET)(ref|rs|os|o)\b|\b(T)(min|max|dew)\b|\b(RH)(max|min)\b|\b(K)(c|o)\b/g;
+const subHTML = s => s.replace(SUBRE, (m, a, b, c, d, e, f, g, h) => `${a || c || e || g}<sub>${b || d || f || h}</sub>`);
+function subify(root){
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode(n){
+    const p = n.parentNode;
+    if (!p || /^(SCRIPT|STYLE|SUB|TITLE|DESC|title|desc|tspan)$/.test(p.nodeName)) return NodeFilter.FILTER_REJECT;
+    SUBRE.lastIndex = 0;
+    return SUBRE.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+  }});
+  const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(n => {
+    const inSvg = n.parentNode.namespaceURI === NS;
+    const frag = document.createDocumentFragment();
+    let last = 0; SUBRE.lastIndex = 0; let m;
+    const s = n.nodeValue;
+    while ((m = SUBRE.exec(s))){
+      const base = m[1] || m[3] || m[5] || m[7], sb = m[2] || m[4] || m[6] || m[8];
+      frag.append(s.slice(last, m.index) + base);
+      if (inSvg){ const t = el("tspan", {"baseline-shift":"sub", "font-size":"72%"}); t.textContent = sb; frag.append(t); }
+      else { const t = document.createElement("sub"); t.textContent = sb; frag.append(t); }
+      last = m.index + m[0].length;
+    }
+    frag.append(s.slice(last));
+    n.parentNode.replaceChild(frag, n);
+  });
+}
+
+/* tooltip */
+const tip = document.getElementById("tip");
+function showTip(h, x, y){
+  tip.innerHTML = subHTML(h); tip.classList.add("on");
+  const r = tip.getBoundingClientRect();
+  let left = x + 14, top = y - r.height - 12;
+  if (left + r.width > innerWidth - 8) left = x - r.width - 14;
+  if (top < 8) top = y + 16;
+  tip.style.left = left + "px"; tip.style.top = top + "px";
+}
+function hideTip(){ tip.classList.remove("on"); }
+function bindTip(node, h){
+  node.style.cursor = "pointer";
+  const get = () => typeof h === "function" ? h() : h;
+  node.addEventListener("pointerenter", e => showTip(get(), e.clientX, e.clientY));
+  node.addEventListener("pointermove", e => showTip(get(), e.clientX, e.clientY));
+  node.addEventListener("pointerleave", hideTip);
+  node.addEventListener("click", e => { showTip(get(), e.clientX, e.clientY); e.stopPropagation(); });
+}
+document.addEventListener("click", hideTip);
+addEventListener("scroll", hideTip, {passive:true});
+
+/* motion helpers. Every chart renders complete; an animation replays only for charts that start
+   below the fold, reset just before they scroll in and played once they are in view. */
+const ease = t => 1 - Math.pow(1 - t, 3);
+function tween(ms, fn, done){
+  const t0 = performance.now();
+  (function step(now){ const t = Math.min(1, (now - t0) / ms); fn(ease(t)); if (t < 1) requestAnimationFrame(step); else if (done) done(); })(t0);
+}
+function reveal(node, reset, play){
+  if (RM || !("IntersectionObserver" in window)) return;
+  if (node.getBoundingClientRect().top < innerHeight) return;
+  let state = 0;
+  const pre = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && state === 0 && e.boundingClientRect.top > innerHeight){ reset(); state = 1; pre.disconnect(); }
+  }), {rootMargin:"0px 0px 70% 0px"});
+  const vis = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && state === 1){ state = 2; vis.disconnect(); play(); }
+  }), {threshold:.3});
+  pre.observe(node); vis.observe(node);
+}
+function drawPath(p, ms, delay){
+  const L = p.getTotalLength();
+  p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+  setTimeout(() => tween(ms, t => p.style.strokeDashoffset = L * (1 - t), () => { p.style.strokeDasharray = ""; p.style.strokeDashoffset = ""; }), delay || 0);
+}
+
+/* ---------- Part 1: before/after comparison sliders ---------- */
+document.querySelectorAll(".compare").forEach(c => {
+  const input = c.querySelector("input");
+  const set = v => c.style.setProperty("--pos", v + "%");
+  input.addEventListener("input", () => set(input.value));
+  set(input.value);
+  reveal(c, () => set(100), () => tween(1600, t => { const v = 100 - t * (100 - 50); set(v); input.value = v; }));
+});
+
+/* ---------- Part 1: cropland service bars ---------- */
+(function(){
+  const host = document.getElementById("farmbars");
+  const rows = [["Daily ETrs",[["Comfortably served",6.3,"#2E7D67"],["Adequately served",75.7,"#E2B55B"],["Underserved",17.9,"#C4572A"]]],
+                ["Seasonal-total ETrs",[["Comfortably served",0,"#2E7D67"],["Adequately served",4.3,"#E2B55B"],["Underserved",95.7,"#C4572A"]]]];
+  const W = 420, H = 190, bw = W;
+  const s = svg(host, W, H, "Share of cropland by service class");
+  const segsDrawn = [];
+  rows.forEach(([name, segs], i) => {
+    const y = 22 + i * 86;
+    el("text", {x:0, y:y, "font-size":13, class:"lab-strong"}, s, name);
+    let x = 0;
+    segs.forEach(([lab, v, c]) => {
+      if (v <= 0) return;
+      const w = Math.max(2, v / 100 * bw - 2);
+      const r = el("rect", {x:x, y:y + 10, width:w, height:34, fill:c}, s);
+      bindTip(r, `<b>${name}: ${lab}</b>${v.toFixed(1)}% of cropland`);
+      const t = v >= 12 ? el("text", {x:x + 8, y:y + 32, "font-size":13, fill: c === "#E2B55B" ? INK : "#fff", "font-weight":600}, s, `${Math.round(v)}%`) : null;
+      segsDrawn.push({r, t, x0:x, w});
+      x += v / 100 * bw;
+    });
+    el("text", {x:W, y:y, "text-anchor":"end", "font-size":12, fill:"#A64A24", "font-weight":600}, s, `${Math.round(segs[2][1])}% underserved`);
+  });
+  html("div", "legend", host, '<span><i style="background:#2E7D67"></i>≥ 90%</span><span><i style="background:#E2B55B"></i>80–90%</span><span><i style="background:#C4572A"></i>&lt; 80% confidence retained</span>');
+  reveal(host, () => segsDrawn.forEach(d => { d.r.setAttribute("width", 0); if (d.t) d.t.style.opacity = 0; }),
+    () => tween(1300, t => segsDrawn.forEach(d => { d.r.setAttribute("width", d.w * t); if (d.t) d.t.style.opacity = t > .7 ? (t - .7) / .3 : 0; })));
+})();
+
+/* ---------- Part 1: growth curve with history scrubber ---------- */
+(function(){
+  const host = document.getElementById("growth");
+  const W = 430, H = 320, m = {l:40, r:12, t:40, b:44};
+  const s = svg(host, W, H, "Real network versus optimal design");
+  const x = n => m.l + n / 140 * (W - m.l - m.r);
+  const y0 = 0.7, y1 = 1.45;
+  const y = v => m.t + (1 - (v - y0) / (y1 - y0)) * (H - m.t - m.b);
+  [0.8,1.0,1.2,1.4].forEach(v => { el("line", {x1:m.l, x2:W - m.r, y1:y(v), y2:y(v), stroke:GRID}, s); el("text", {x:m.l - 8, y:y(v) + 4, "text-anchor":"end"}, s, v.toFixed(1)); });
+  [0,20,40,60,80,100,120,140].forEach(n => el("text", {x:x(n), y:H - m.b + 18, "text-anchor":"middle"}, s, n));
+  el("text", {x:(m.l + W - m.r) / 2, y:H - 6, "text-anchor":"middle"}, s, "Number of core stations");
+  el("text", {x:0, y:14, class:"lab-strong"}, s, "Cropland-weighted daily ETrs uncertainty");
+  el("text", {x:0, y:30, "font-size":12}, s, "kriging standard deviation, mm/day");
+  const opt = DATA.growth.optimal, real = DATA.growth.real.filter(p => p[1] > 0);
+  const optAt = n => opt[Math.min(n, opt.length - 1)][1];
+  const pOpt = el("path", {d:"M" + opt.map(p => `${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join("L"), fill:"none", stroke:"#2E7D67", "stroke-width":2}, s);
+  const pReal = el("path", {d:"M" + DATA.growth.real.map(p => `${x(p[1]).toFixed(1)},${y(p[2]).toFixed(1)}`).join("L"), fill:"none", stroke:"#B9852C", "stroke-width":2}, s);
+  const dots = real.map(p => {
+    const c = el("circle", {cx:x(p[1]), cy:y(p[2]), r:4, fill:"#B9852C", stroke:PAPER, "stroke-width":1.5}, s);
+    bindTip(c, `<b>${p[0]}: ${p[1]} stations</b>Real network ${p[2].toFixed(3)} mm/day<br>Optimal design ${optAt(p[1]).toFixed(3)} mm/day`);
+    return c;
+  });
+  el("text", {x:x(26), y:y(1.03), "font-size":13, fill:"#946A1F", "font-weight":600}, s, "Real network, 1989–2024");
+  el("text", {x:x(40), y:y(0.76), "font-size":13, fill:"#2E7D67", "font-weight":600}, s, "Optimal design");
+  const cur = el("g", {}, s);
+  const vline = el("line", {y1:m.t, y2:H - m.b, stroke:INK, "stroke-width":1, "stroke-dasharray":"2 3"}, cur);
+  const ring = el("circle", {r:7.5, fill:"none", stroke:INK, "stroke-width":1.5}, cur);
+  const oDot = el("circle", {r:4, fill:"#2E7D67", stroke:PAPER, "stroke-width":1.5}, cur);
+
+  const ro = html("div", "readout", host);
+  const cell = lab => { const d = html("div", "", ro); html("span", "", d, lab); return html("strong", "", d); };
+  const rYear = cell("Year"), rN = cell("Core stations"), rReal = cell("Real, mm/day"), rGap = cell("Above optimal");
+  const lab = html("label", "", host); lab.htmlFor = "growthScrub"; lab.className = "hint"; lab.style.display = "block"; lab.style.marginTop = ".8rem";
+  lab.textContent = "Drag to replay the network's growth, 1989 to 2024";
+  const scrub = html("input", "scrub", host); scrub.type = "range"; scrub.id = "growthScrub"; scrub.min = 0; scrub.max = real.length - 1; scrub.step = 1; scrub.value = real.length - 1;
+  function set(i){
+    const p = real[i], n = p[1], o = optAt(n);
+    vline.setAttribute("x1", x(n)); vline.setAttribute("x2", x(n));
+    ring.setAttribute("cx", x(n)); ring.setAttribute("cy", y(p[2]));
+    oDot.setAttribute("cx", x(n)); oDot.setAttribute("cy", y(o));
+    dots.forEach((d, j) => d.style.opacity = j <= i ? 1 : .18);
+    rYear.textContent = p[0]; rN.textContent = n; rReal.textContent = p[2].toFixed(2);
+    rGap.textContent = ((p[2] / o - 1) * 100).toFixed(1) + "%";
+  }
+  scrub.addEventListener("input", () => set(+scrub.value));
+  set(real.length - 1);
+  reveal(host, () => { pOpt.style.opacity = 0; pReal.style.opacity = 0; set(0); scrub.value = 0; },
+    () => { pOpt.style.opacity = 1; pReal.style.opacity = 1; drawPath(pOpt, 1200); drawPath(pReal, 1800, 200);
+            tween(2000, t => { const i = Math.round(t * (real.length - 1)); scrub.value = i; set(i); }); });
+})();
+
+/* ---------- Part 1: 2024 picks strip ---------- */
+(function(){
+  const host = document.getElementById("picks");
+  const W = 430, H = 210, m = {l:16, r:24};
+  const s = svg(host, W, H, "2024 stations by priority percentile");
+  const x = p => m.l + p / 100 * (W - m.l - m.r);
+  const base = 120;
+  el("line", {x1:x(0), x2:x(100), y1:base, y2:base, class:"base"}, s);
+  [0,25,50,75,100].forEach(p => { el("line", {x1:x(p), x2:x(p), y1:base, y2:base + 6, class:"base"}, s); el("text", {x:x(p), y:base + 22, "text-anchor":"middle"}, s, p); });
+  el("text", {x:x(50), y:base + 44, "text-anchor":"middle"}, s, "Priority percentile (pre-2022 model)");
+  el("line", {x1:x(50), x2:x(50), y1:40, y2:base, stroke:"#8A857A", "stroke-dasharray":"3 3"}, s);
+  el("text", {x:x(50) - 6, y:52, "text-anchor":"end", "font-size":12}, s, "Random siting:");
+  el("text", {x:x(50) - 6, y:67, "text-anchor":"end", "font-size":12}, s, "50th expected");
+  const picks = DATA.picks2024.slice().sort((a, b) => a.p - b.p);
+  const placed = [], circles = [];
+  picks.forEach(d => {
+    let lvl = 0; while (placed.some(q => q.l === lvl && Math.abs(x(q.p) - x(d.p)) < 11)) lvl++;
+    placed.push({p:d.p, l:lvl});
+    const c = el("circle", {cx:x(d.p), cy:base - 9 - lvl * 12, r:5, fill:"#1F5571", stroke:PAPER, "stroke-width":1.5}, s);
+    bindTip(c, `<b>${d.n}</b>${d.p.toFixed(1)} percentile`);
+    circles.push(c);
+  });
+  const med = 92.9;
+  const ml = el("line", {x1:x(med), x2:x(med), y1:24, y2:base, stroke:"#A9592A", "stroke-width":2}, s);
+  const mt = el("text", {x:x(med) - 6, y:30, "text-anchor":"end", "font-size":13, fill:"#A64A24", "font-weight":600}, s, "Median: 93rd");
+  reveal(host, () => { circles.forEach(c => c.setAttribute("r", 0)); ml.style.opacity = mt.style.opacity = 0; },
+    () => { circles.forEach((c, i) => setTimeout(() => tween(380, t => c.setAttribute("r", 5 * t)), i * 45));
+            setTimeout(() => tween(500, t => ml.style.opacity = mt.style.opacity = t), circles.length * 45 + 200); });
+})();
+
+/* ---------- Part 2: animated night, air temperature vs dew point ---------- */
+(function(){
+  const host = document.getElementById("dewtest");
+  const W = 470, H = 290;
+  const s = svg(host, W, H, "Schematic overnight air temperature and dew point");
+  const panels = [{x0:0, title:"Well-watered fetch", gapEnd:0.3, col:"#2E6B4E", note:["Tmin ≈ Tdew", "MDD ≈ 0, RHmax ≈ 100%"]},
+                  {x0:240, title:"Dry fetch", gapEnd:5.5, col:"#A9592A", note:["Tmin > Tdew", "MDD > 0, RHmax < 100%"]}];
+  const parts = panels.map(p => {
+    const w = 230, t = 40, b = 210, X = h => p.x0 + 10 + h / 10 * (w - 20);
+    const Y = v => t + (1 - (v - 4) / 18) * (b - t);
+    el("text", {x:p.x0 + 10, y:20, "font-size":14, class:"lab-strong"}, s, p.title);
+    el("line", {x1:X(0), x2:X(10), y1:b, y2:b, class:"base"}, s);
+    ["evening","midnight","dawn"].forEach((lab, i) => el("text", {x:X(i * 5), y:b + 18, "text-anchor": i === 0 ? "start" : i === 2 ? "end" : "middle", "font-size":11}, s, lab));
+    const dew = 8, air = h => dew + p.gapEnd + (20 - dew - p.gapEnd) * Math.exp(-h / 3.2);
+    el("line", {x1:X(0), x2:X(10), y1:Y(dew), y2:Y(dew), stroke:"#3A7CA3", "stroke-width":2, "stroke-dasharray":"5 4"}, s);
+    const path = el("path", {fill:"none", stroke:p.col, "stroke-width":2.5, "stroke-linecap":"round"}, s);
+    const head = el("circle", {r:4.5, fill:p.col, stroke:PAPER, "stroke-width":1.5}, s);
+    el("text", {x:X(0.2), y:Y(air(0.2)) - 8, "font-size":11, fill:p.col, "font-weight":600}, s, "Air temperature");
+    el("text", {x:X(0.2), y:Y(dew) + 16, "font-size":11, fill:"#2C6A90", "font-weight":600}, s, "Dew point (Tdew)");
+    const end = el("g", {}, s);
+    if (p.gapEnd > 1) {
+      el("line", {x1:X(9.6), x2:X(9.6), y1:Y(air(9.6)) + 3, y2:Y(dew) - 3, stroke:p.col, "stroke-width":1.5}, end);
+      el("text", {x:X(9.3), y:(Y(air(9.6)) + Y(dew)) / 2 + 4, "text-anchor":"end", "font-size":11, fill:p.col, "font-weight":600}, end, "MDD");
+    } else {
+      el("circle", {cx:X(9.6), cy:Y(dew), r:6, fill:"none", stroke:"#3A7CA3", "stroke-width":2}, end);
+    }
+    el("text", {x:p.x0 + 10, y:b + 42, "font-size":12, fill:p.col, "font-weight":600}, end, p.note[0]);
+    el("text", {x:p.x0 + 10, y:b + 64, "font-size":12, fill:p.col, "font-weight":600}, end, p.note[1]);
+    return {draw(f){
+      const hEnd = 10 * f; let d = "";
+      for (let h = 0; h <= hEnd + 1e-6; h += 0.2) d += (h ? "L" : "M") + X(h).toFixed(1) + "," + Y(air(h)).toFixed(1);
+      if (!d) d = `M${X(0)},${Y(air(0))}`;
+      path.setAttribute("d", d);
+      head.setAttribute("cx", X(hEnd)); head.setAttribute("cy", Y(air(hEnd)));
+      end.style.opacity = f > .92 ? (f - .92) / .08 : 0;
+    }};
+  });
+  const draw = f => parts.forEach(p => p.draw(f));
+  draw(1);
+  const bar = html("div", "controls", host); bar.style.margin = ".6rem 0 0";
+  const btn = html("button", "play", bar, "▶&nbsp; Play the night"); btn.type = "button";
+  caption(host, "Schematic of a growing-season night. Tmin is reached near dawn.");
+  const play = () => { if (RM) { draw(1); return; } tween(3600, draw); };
+  btn.addEventListener("click", play);
+  reveal(host, () => draw(0), play);
+})();
+
+/* ---------- Part 2: NDVI scale ---------- */
+(function(){
+  const host = document.getElementById("ndvistrip");
+  const W = 430, H = 220, m = {l:16, r:20};
+  const s = svg(host, W, H, "NDVI scale");
+  const x = v => m.l + v / 0.8 * (W - m.l - m.r);
+  const base = 150;
+  const grad = el("linearGradient", {id:"ndg", x1:0, x2:1, y1:0, y2:0}, el("defs", {}, s));
+  [["0%","#F2EAD3"],["50%","#B9CF8E"],["100%","#2E6B45"]].forEach(([o, c]) => el("stop", {offset:o, "stop-color":c}, grad));
+  el("rect", {x:x(0), y:base - 16, width:x(0.8) - x(0), height:16, fill:"url(#ndg)"}, s);
+  [0,0.2,0.4,0.6,0.8].forEach(v => { el("line", {x1:x(v), x2:x(v), y1:base, y2:base + 6, class:"base"}, s); el("text", {x:x(v), y:base + 22, "text-anchor":"middle"}, s, v.toFixed(1)); });
+  el("text", {x:x(0.4), y:base + 50, "text-anchor":"middle"}, s, "Mean growing-season NDVI, 300 m buffer");
+  el("line", {x1:x(0.4), x2:x(0.4), y1:10, y2:base, stroke:"#8A857A", "stroke-width":1.5, "stroke-dasharray":"4 3"}, s);
+  el("text", {x:x(0.4) - 5, y:18, "text-anchor":"end", "font-size":12, fill:INK2, "font-weight":600}, s, "≤ 0.4 sparse or");
+  el("text", {x:x(0.4) - 5, y:32, "text-anchor":"end", "font-size":12, fill:INK2, "font-weight":600}, s, "moisture-limited");
+  el("line", {x1:x(0.6), x2:x(0.6), y1:10, y2:base, stroke:"#2E6B45", "stroke-width":1.5, "stroke-dasharray":"4 3"}, s);
+  el("text", {x:x(0.6) + 5, y:18, "font-size":12, fill:"#2E6B45", "font-weight":600}, s, "≥ 0.6 dense,");
+  el("text", {x:x(0.6) + 5, y:32, "font-size":12, fill:"#2E6B45", "font-weight":600}, s, "reference-like");
+  const marks = [[0.331,"Network mean 0.33",72],[0.552,"Highest station mean 0.55",104]].map(([v, lab, ly]) => {
+    const g = el("g", {}, s);
+    el("line", {x1:x(v), x2:x(v), y1:ly + 6, y2:base - 14, stroke:INK, "stroke-width":1.5}, g);
+    el("circle", {cx:x(v), cy:base - 8, r:6, fill:INK, stroke:PAPER, "stroke-width":2}, g);
+    el("text", {x:x(v) - 6, y:ly, "text-anchor":"end", "font-size":13, class:"lab-strong", stroke:PAPER, "stroke-width":4, "paint-order":"stroke"}, g, lab);
+    return {g, dx:x(v) - x(0)};
+  });
+  reveal(host, () => marks.forEach(k => { k.g.setAttribute("transform", `translate(${-k.dx},0)`); k.g.style.opacity = 0; }),
+    () => tween(1400, t => marks.forEach(k => { k.g.setAttribute("transform", `translate(${-k.dx * (1 - t)},0)`); k.g.style.opacity = Math.min(1, t * 3); })));
+})();
+
+/* ---------- Part 2: state bars (manuscript values) ---------- */
+(function(){
+  const host = document.getElementById("statebars");
+  const rows = [["Oregon",30.4,0.87,70],["Montana",40.4,1.70,27],["Idaho",49.6,2.47,52],["Washington",57.6,3.17,21],["Nevada",61.6,4.36,4],["Utah",65.6,4.44,19]];
+  const W = 430, rowH = 38, m = {l:92, r:44, t:30};
+  const H = m.t + rows.length * rowH + 30;
+  const s = svg(host, W, H, "Share of growing-season days with MDD above 2 °C by state");
+  const x = v => m.l + v / 100 * (W - m.l - m.r);
+  el("text", {x:0, y:14, class:"lab-strong"}, s, "Mean share of growing-season days with MDD > 2 °C");
+  [0,25,50,75,100].forEach(v => { el("line", {x1:x(v), x2:x(v), y1:m.t, y2:H - 26, stroke:GRID}, s); el("text", {x:x(v), y:H - 8, "text-anchor":"middle"}, s, v + "%"); });
+  const bars = rows.map(([st, v, mdd, n], i) => {
+    const y = m.t + i * rowH + 7;
+    el("text", {x:m.l - 10, y:y + 17, "text-anchor":"end", "font-size":13, fill:INK, "font-weight": st === "Idaho" ? 600 : 400}, s, st);
+    const w = x(v) - x(0);
+    const b = el("rect", {x:x(0), y:y, width:w, height:24, fill:dryColor(v), stroke:"#3A342C", "stroke-width":.5}, s);
+    const t = el("text", {x:x(v) + 6, y:y + 17, "font-size":13, class:"lab-strong"}, s, v.toFixed(0) + "%");
+    bindTip(b, `<b>${st} (${n} stations)</b>MDD > 2 °C on ${v}% of growing-season days<br>Mean growing-season MDD ${mdd.toFixed(2)} °C`);
+    return {b, t, w, v};
+  });
+  caption(host, "State means reported in the manuscript. California and Wyoming (2 stations each) not shown.");
+  reveal(host, () => bars.forEach(d => { d.b.setAttribute("width", 0); d.t.setAttribute("x", x(0) + 6); d.t.textContent = "0%"; }),
+    () => tween(1400, t => bars.forEach(d => { d.b.setAttribute("width", d.w * t); d.t.setAttribute("x", x(0) + d.w * t + 6); d.t.textContent = Math.round(d.v * t) + "%"; })));
+})();
+
+/* ---------- Part 2: station map with metric and land-cover filters ---------- */
+(function(){
+  const host = document.getElementById("stationmap");
+  const M = DATA.map;
+  const METRICS = {
+    dry:{label:"Dry nights", title:"Growing-season days with MDD > 2 °C", classes:["0–20%","20–40%","40–60%","60–80%","80–100%"],
+         cls:d => Math.min(4, Math.floor(d.dry / 20))},
+    rh:{label:"Nighttime humidity", title:"Mean growing-season RHmax", classes:["≥ 95%","90–95%","85–90%","80–85%","< 80%"],
+        cls:d => d.rh == null ? -1 : d.rh >= 95 ? 0 : d.rh >= 90 ? 1 : d.rh >= 85 ? 2 : d.rh >= 80 ? 3 : 4}
+  };
+  let metric = "dry", cover = "All";
+
+  const ctl = html("div", "controls", host);
+  const g1 = html("div", "", ctl); html("span", "ctl-lab", g1, "Color by");
+  const seg = html("div", "seg", g1); seg.setAttribute("role", "group"); seg.setAttribute("aria-label", "Color stations by");
+  Object.entries(METRICS).forEach(([k, v]) => { const b = html("button", "", seg, v.label); b.type = "button"; b.dataset.k = k; b.setAttribute("aria-pressed", k === metric); });
+  const covers = ["All", ...[...new Set(M.stations.map(d => d.lc))].filter(c => c !== "Unknown").sort((a, b) =>
+    M.stations.filter(d => d.lc === b).length - M.stations.filter(d => d.lc === a).length)];
+  const g2 = html("div", "", ctl); g2.style.display = "flex"; g2.style.flexWrap = "wrap"; g2.style.alignItems = "center"; g2.style.gap = ".4rem";
+  html("span", "ctl-lab", g2, "Land cover, 300 m");
+  const chips = html("div", "chips", g2); chips.setAttribute("role", "group"); chips.setAttribute("aria-label", "Show stations by dominant land cover");
+  covers.forEach(c => { const b = html("button", "", chips, c); b.type = "button"; b.dataset.c = c; b.setAttribute("aria-pressed", c === cover); });
+
+  const s = svg(host, M.w, M.h, "Map of stations colored by an aridity indicator");
+  M.states.forEach(st => el("path", {d:st.d, fill:"#ECEAE2", stroke:"#B9B4A6", "stroke-width":1.1}, s));
+  M.states.forEach(st => { if (st.lx > 10 && st.lx < M.w - 10 && st.ly > 10 && st.ly < M.h - 10) el("text", {x:st.lx, y:st.ly, "text-anchor":"middle", "font-size":20, fill:"#A8A291", "font-weight":600, "letter-spacing":3}, s, st.st); });
+  const pts = M.stations.slice().sort((a, b) => a.dry - b.dry).map(d => {
+    const c = el("circle", {cx:d.x, cy:d.y, r:7.5, stroke:"#3A342C", "stroke-width":1}, s);
+    bindTip(c, `<b>${d.n}</b>MDD > 2 °C on ${Math.round(d.dry)}% of growing-season days` + (d.rh != null ? `<br>Mean growing-season RHmax ${d.rh.toFixed(1)}%` : "") + `<br>Dominant land cover (300 m): ${d.lc}<br>Record: ${d.yrs}`);
+    return {d, c};
+  });
+  const callouts = {tlmo:[-1,"Tillamook"], gcdw:[1,"Grand Coulee Dam"], blcu:[1,"Blue Creek"], ifai:[1,"Idaho Falls"], osgi:[-1,"Osgood"], asto:[-1,"Astoria"]};
+  M.stations.forEach(d => {
+    const c = callouts[d.id]; if (!c) return;
+    el("text", {x:d.x + c[0] * 14, y:d.y + (d.id === "osgi" ? -8 : d.id === "ifai" ? 14 : 5), "text-anchor": c[0] > 0 ? "start" : "end", "font-size":15, class:"lab-strong", stroke:PAPER, "stroke-width":4, "paint-order":"stroke", "pointer-events":"none"}, s, c[1]);
+  });
+  const lg = html("div", "legend", host);
+  const ro = html("p", "cap", host);
+  caption(host, "Each dot is a station, averaged over its full record (study data). <b>Hover or tap a dot</b> for MDD, RHmax, land cover and record length.");
+
+  function render(){
+    const mt = METRICS[metric];
+    pts.forEach(({d, c}) => {
+      const k = mt.cls(d);
+      c.setAttribute("fill", k < 0 ? "#D9D6CD" : DRY[k]);
+      c.classList.toggle("dim", cover !== "All" && d.lc !== cover);
+    });
+    lg.innerHTML = `<span style="font-weight:600;color:${INK}">${subHTML(mt.title)}:</span>` +
+      mt.classes.map((t, i) => `<span><i style="background:${DRY[i]};border:1px solid #3A342C"></i>${t}</span>`).join("");
+    const sel = pts.filter(p => cover === "All" || p.d.lc === cover).map(p => p.d);
+    const vals = sel.map(d => metric === "dry" ? d.dry : d.rh).filter(v => v != null).sort((a, b) => a - b);
+    const med = vals.length ? vals[Math.floor((vals.length - 1) / 2)] : null;
+    ro.innerHTML = (cover === "All" ? "<b>All stations.</b> " : `<b>${sel.length} station${sel.length === 1 ? "" : "s"}</b> with ${cover.toLowerCase()} dominant within 300 m. `) +
+      (med == null ? "" : subHTML(metric === "dry" ? `Median: MDD > 2 °C on ${Math.round(med)}% of growing-season days.` : `Median growing-season RHmax: ${med.toFixed(1)}%.`));
+    seg.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === metric));
+    chips.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.c === cover));
+  }
+  seg.addEventListener("click", e => { const b = e.target.closest("button"); if (b){ metric = b.dataset.k; render(); } });
+  chips.addEventListener("click", e => { const b = e.target.closest("button"); if (b){ cover = b.dataset.c; render(); } });
+  render();
+  reveal(s, () => pts.forEach(p => p.c.setAttribute("r", 0)),
+    () => pts.forEach((p, i) => setTimeout(() => tween(420, t => p.c.setAttribute("r", 7.5 * t)), (p.d.y / M.h) * 900)));
+})();
+
+/* ---------- Part 2: R² by buffer (Table S2, growing season) ---------- */
+(function(){
+  const host = document.getElementById("r2chart");
+  const radii = [100, 300, 1000, 2000];
+  const series = [["MDD > 1 °C", [0.130, 0.124, 0.148, 0.185], "#C98A45"], ["MDD > 5 °C", [0.101, 0.111, 0.176, 0.243], "#87381B"]];
+  const W = 430, H = 300, m = {l:44, r:86, t:36, b:44};
+  const s = svg(host, W, H, "R squared of NDVI versus MDD exceedance by buffer radius");
+  const x = i => m.l + i / 3 * (W - m.l - m.r);
+  const y = v => m.t + (1 - v / 0.3) * (H - m.t - m.b);
+  el("text", {x:0, y:14, class:"lab-strong"}, s, "R² of NDVI vs. share of days above threshold");
+  [0,0.1,0.2,0.3].forEach(v => { el("line", {x1:m.l, x2:W - m.r, y1:y(v), y2:y(v), stroke:GRID}, s); el("text", {x:m.l - 8, y:y(v) + 4, "text-anchor":"end"}, s, v.toFixed(1)); });
+  radii.forEach((r, i) => el("text", {x:x(i), y:H - m.b + 18, "text-anchor":"middle"}, s, r.toLocaleString("en-US") + " m"));
+  el("text", {x:(m.l + W - m.r) / 2, y:H - 6, "text-anchor":"middle"}, s, "Buffer radius around station");
+  const drawn = series.map(([name, vals, c]) => {
+    const p = el("path", {d:"M" + vals.map((v, i) => `${x(i)},${y(v)}`).join("L"), fill:"none", stroke:c, "stroke-width":2}, s);
+    const pts = vals.map((v, i) => { const pt = el("circle", {cx:x(i), cy:y(v), r:5, fill:c, stroke:PAPER, "stroke-width":2}, s); bindTip(pt, `<b>${name}, ${radii[i].toLocaleString("en-US")} m</b>R² = ${v.toFixed(3)}`); return pt; });
+    el("text", {x:x(3) + 10, y:y(vals[3]) + 4, "font-size":13, fill:c, "font-weight":600}, s, name);
+    return {p, pts};
+  });
+  caption(host, "Growing season, 197 stations. Values from Supplementary Table S2.");
+  reveal(host, () => drawn.forEach(d => { d.p.style.opacity = 0; d.pts.forEach(c => c.style.opacity = 0); }),
+    () => drawn.forEach((d, k) => { d.p.style.opacity = 1; drawPath(d.p, 1300, k * 250); d.pts.forEach((c, i) => setTimeout(() => c.style.opacity = 1, k * 250 + i * 320)); }));
+})();
+
+subify(document.body);
+</script>
+
+</body>
+</html>
